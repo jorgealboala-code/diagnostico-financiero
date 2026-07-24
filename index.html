@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hoja de diagnóstico financiero</title>
+<style>
+:root{
+  --papel:#E9ECE5;
+  --papel-alt:#DFE4DA;
+  --tinta:#16232B;
+  --tinta-suave:#5A6B72;
+  --regla:#BEC7BC;
+  --teal:#1F6F6B;
+  --ambar:#B07708;
+  --oxido:#96371F;
+  --realce:#FFFDF4;
+  --serif:Georgia,"Iowan Old Style","Times New Roman",serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--papel);
+  color:var(--tinta);
+  font-family:var(--sans);
+  font-size:15px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+.eyebrow{
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--tinta-suave);
+}
+.encabezado{
+  border-bottom:2px solid var(--tinta);
+  padding:22px 28px 16px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:16px;
+  align-items:flex-end;
+  justify-content:space-between;
+}
+.encabezado h1{
+  font-family:var(--serif);
+  font-size:30px;
+  font-weight:400;
+  letter-spacing:-.015em;
+  margin:4px 0 0;
+}
+.encabezado p{margin:6px 0 0;max-width:52ch;color:var(--tinta-suave);font-size:13px}
+.controles{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+
+select,input,button{font-family:inherit;font-size:14px;color:var(--tinta)}
+select,input[type=text],input[type=number]{
+  background:var(--realce);
+  border:1px solid var(--regla);
+  border-radius:2px;
+  padding:6px 8px;
+}
+input[type=number]{
+  font-family:var(--mono);
+  font-size:13px;
+  text-align:right;
+  font-variant-numeric:tabular-nums;
+  width:100%;
+}
+input[type=number]:focus,select:focus,button:focus-visible{
+  outline:2px solid var(--teal);
+  outline-offset:1px;
+}
+button{
+  background:var(--tinta);
+  color:var(--papel);
+  border:1px solid var(--tinta);
+  border-radius:2px;
+  padding:7px 13px;
+  cursor:pointer;
+}
+button.fantasma{background:transparent;color:var(--tinta)}
+button:hover{opacity:.85}
+
+.lienzo{
+  display:grid;
+  grid-template-columns:minmax(360px,42%) 1fr;
+  align-items:start;
+}
+.captura{
+  border-right:1px solid var(--regla);
+  padding:20px 24px 60px;
+}
+.diagnostico{padding:20px 26px 60px;min-width:0}
+
+.grupo{margin-bottom:22px}
+.grupo h2{
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--tinta-suave);
+  font-weight:600;
+  margin:0 0 8px;
+  padding-bottom:5px;
+  border-bottom:1px solid var(--regla);
+}
+.fila{
+  display:grid;
+  grid-template-columns:1fr 92px 92px;
+  gap:8px;
+  align-items:center;
+  padding:3px 0;
+}
+.fila label{font-size:13px;line-height:1.3}
+.cabecera-fila{
+  display:grid;
+  grid-template-columns:1fr 92px 92px;
+  gap:8px;
+  padding-bottom:4px;
+}
+.cabecera-fila span{
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--tinta-suave);
+  text-align:right;
+}
+.cabecera-fila span:first-child{text-align:left}
+.solo-t input{grid-column:2}
+
+.tarjeta{
+  background:var(--realce);
+  border:1px solid var(--regla);
+  border-radius:2px;
+  padding:16px 18px;
+  margin-bottom:16px;
+}
+.tarjeta > header{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  gap:12px;
+  margin-bottom:4px;
+}
+.tarjeta h3{
+  font-family:var(--serif);
+  font-size:19px;
+  font-weight:400;
+  margin:0;
+}
+.puntaje{
+  font-family:var(--serif);
+  font-size:34px;
+  line-height:1;
+  font-variant-numeric:tabular-nums;
+}
+.veredicto{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  padding:2px 7px;
+  border:1px solid currentColor;
+  border-radius:2px;
+  white-space:nowrap;
+}
+.v-bien{color:var(--teal)}
+.v-gris{color:var(--ambar)}
+.v-mal{color:var(--oxido)}
+.nota{font-size:12.5px;color:var(--tinta-suave);margin:8px 0 0}
+
+/* Banda de diagnóstico: la firma de la hoja */
+.banda{margin:14px 0 4px}
+.banda .pista{
+  position:relative;
+  height:26px;
+  display:flex;
+  border:1px solid var(--tinta);
+  border-radius:2px;
+  overflow:hidden;
+}
+.banda .zona{flex:1;position:relative}
+.banda .zona span{
+  position:absolute;
+  bottom:3px;
+  left:6px;
+  font-family:var(--mono);
+  font-size:9px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  opacity:.75;
+}
+.z-mal{background:rgba(150,55,31,.16)}
+.z-gris{background:rgba(176,119,8,.16)}
+.z-bien{background:rgba(31,111,107,.16)}
+.aguja{
+  position:absolute;
+  top:-5px;
+  bottom:-5px;
+  width:2px;
+  background:var(--tinta);
+  transition:left .25s ease;
+}
+.aguja::after{
+  content:"";
+  position:absolute;
+  top:-4px;
+  left:-4px;
+  border-left:5px solid transparent;
+  border-right:5px solid transparent;
+  border-top:6px solid var(--tinta);
+}
+.escala{
+  display:flex;
+  justify-content:space-between;
+  font-family:var(--mono);
+  font-size:9.5px;
+  color:var(--tinta-suave);
+  margin-top:3px;
+}
+
+.desglose{width:100%;border-collapse:collapse;margin-top:10px}
+.desglose th,.desglose td{
+  text-align:right;
+  padding:3px 0;
+  font-size:12.5px;
+  font-variant-numeric:tabular-nums;
+  font-family:var(--mono);
+  border-bottom:1px dotted var(--regla);
+}
+.desglose th{
+  text-align:left;
+  font-weight:400;
+  font-family:var(--sans);
+  color:var(--tinta-suave);
+}
+.desglose td.marca{font-family:var(--sans);width:22px}
+
+.cadena{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:stretch;
+  gap:6px;
+  margin-top:12px;
+}
+.eslabon{
+  flex:1 1 84px;
+  border:1px solid var(--regla);
+  border-radius:2px;
+  padding:7px 8px;
+  text-align:center;
+  background:var(--papel-alt);
+}
+.eslabon b{
+  display:block;
+  font-family:var(--mono);
+  font-size:15px;
+  font-variant-numeric:tabular-nums;
+}
+.eslabon small{font-size:10px;color:var(--tinta-suave);line-height:1.2;display:block;margin-top:2px}
+.operador{align-self:center;font-family:var(--serif);font-size:17px;color:var(--tinta-suave)}
+.eslabon.resultado{background:var(--tinta);border-color:var(--tinta);color:var(--papel)}
+.eslabon.resultado small{color:var(--papel-alt)}
+
+.senales{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:5px;margin-top:12px}
+.senal{
+  display:flex;
+  gap:7px;
+  align-items:flex-start;
+  font-size:12.5px;
+  padding:4px 6px;
+  border-left:3px solid var(--regla);
+  background:var(--papel-alt);
+}
+.senal.si{border-left-color:var(--teal)}
+.senal.no{border-left-color:var(--oxido);opacity:.62}
+.senal .caja{font-family:var(--mono);font-weight:700}
+
+.aviso{
+  border-left:3px solid var(--ambar);
+  background:rgba(176,119,8,.09);
+  padding:9px 12px;
+  font-size:12.5px;
+  margin:0 0 16px;
+}
+.faltante{border-left-color:var(--oxido);background:rgba(150,55,31,.09)}
+.pie{
+  grid-column:1/-1;
+  border-top:1px solid var(--regla);
+  padding:16px 28px 40px;
+  font-size:12px;
+  color:var(--tinta-suave);
+}
+.pie h4{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;margin:0 0 6px}
+.pie ul{margin:0;padding-left:16px}
+.pie li{margin-bottom:3px}
+
+@media (max-width:900px){
+  .lienzo{grid-template-columns:1fr}
+  .captura{border-right:none;border-bottom:1px solid var(--regla);padding-bottom:28px}
+}
+@media (prefers-reduced-motion:reduce){
+  .aguja{transition:none}
+}
+</style>
+</head>
+<body>
+
+<header class="encabezado">
+  <div>
+    <div class="eyebrow">Diplomado · Análisis fundamental</div>
+    <h1>Hoja de diagnóstico financiero</h1>
+    <p>Cuatro modelos clásicos sobre una sola captura. Escribe las cifras de dos ejercicios anuales consecutivos y el diagnóstico se recalcula solo.</p>
+  </div>
+  <div class="controles">
+    <select id="selEmpresa" aria-label="Empresa precargada">
+      <option value="">— Captura manual —</option>
+    </select>
+    <select id="selMoneda" aria-label="Escala de las cifras">
+      <option value="1">Cifras tal cual</option>
+      <option value="1000" selected>Cifras en miles</option>
+      <option value="1000000">Cifras en millones</option>
+    </select>
+    <button id="btnCsv" class="fantasma" type="button">Descargar CSV</button>
+    <button id="btnLimpiar" class="fantasma" type="button">Limpiar</button>
+  </div>
+</header>
+
+<main class="lienzo">
+
+  <section class="captura" aria-label="Captura de estados financieros">
+    <div class="cabecera-fila">
+      <span>Concepto</span><span>Año t</span><span>Año t−1</span>
+    </div>
+    <div id="formulario"></div>
+    <p class="nota">La escala no cambia ningún resultado: los cuatro modelos son razones. Sirve solo para que captures como viene el estado financiero.</p>
+  </section>
+
+  <section class="diagnostico" aria-label="Resultados">
+    <div id="avisos"></div>
+
+    <article class="tarjeta" id="tAltman">
+      <header>
+        <div>
+          <h3>Altman Z-Score</h3>
+          <div class="eyebrow">Probabilidad de quiebra · Altman (1968)</div>
+        </div>
+        <div style="text-align:right">
+          <div class="puntaje" id="zValor">—</div>
+          <div class="veredicto" id="zVeredicto">sin datos</div>
+        </div>
+      </header>
+      <div style="margin-top:10px">
+        <label class="eyebrow" for="selVariante">Variante</label>
+        <select id="selVariante" style="margin-left:8px">
+          <option value="original">Original — manufactura pública</option>
+          <option value="zdoble">Z″ — servicios y mercados emergentes</option>
+        </select>
+      </div>
+      <div class="banda">
+        <div class="pista">
+          <div class="zona z-mal" style="flex:1.81"><span>Zona de quiebra</span></div>
+          <div class="zona z-gris" style="flex:1.18"><span>Gris</span></div>
+          <div class="zona z-bien" style="flex:3.01"><span>Zona segura</span></div>
+          <div class="aguja" id="zAguja" style="left:0%"></div>
+        </div>
+        <div class="escala"><span id="zMin">0</span><span id="zCorte1">1.81</span><span id="zCorte2">2.99</span><span id="zMax">6.00</span></div>
+      </div>
+      <table class="desglose" id="zTabla"></table>
+    </article>
+
+    <article class="tarjeta" id="tPiotroski">
+      <header>
+        <div>
+          <h3>Piotroski F-Score</h3>
+          <div class="eyebrow">Solidez fundamental · Piotroski (2000)</div>
+        </div>
+        <div style="text-align:right">
+          <div class="puntaje" id="fValor">—</div>
+          <div class="veredicto" id="fVeredicto">sin datos</div>
+        </div>
+      </header>
+      <div class="banda">
+        <div class="pista">
+          <div class="zona z-mal" style="flex:3"><span>Débil</span></div>
+          <div class="zona z-gris" style="flex:4"><span>Intermedia</span></div>
+          <div class="zona z-bien" style="flex:2"><span>Fuerte</span></div>
+          <div class="aguja" id="fAguja" style="left:0%"></div>
+        </div>
+        <div class="escala"><span>0</span><span>3</span><span>7</span><span>9</span></div>
+      </div>
+      <div class="senales" id="fSenales"></div>
+    </article>
+
+    <article class="tarjeta" id="tBeneish">
+      <header>
+        <div>
+          <h3>Beneish M-Score</h3>
+          <div class="eyebrow">Banderas rojas contables · Beneish (1999)</div>
+        </div>
+        <div style="text-align:right">
+          <div class="puntaje" id="mValor">—</div>
+          <div class="veredicto" id="mVeredicto">sin datos</div>
+        </div>
+      </header>
+      <div class="banda">
+        <div class="pista">
+          <div class="zona z-bien" style="flex:3.22"><span>Perfil normal</span></div>
+          <div class="zona z-mal" style="flex:2.78"><span>Perfil de manipulador</span></div>
+          <div class="aguja" id="mAguja" style="left:0%"></div>
+        </div>
+        <div class="escala"><span>−5.00</span><span>−1.78</span><span>+1.00</span></div>
+      </div>
+      <table class="desglose" id="mTabla"></table>
+      <p class="nota">Un M-Score arriba del corte significa que la empresa comparte rasgos estadísticos con manipuladores conocidos. No es evidencia de fraude: es una instrucción para ir a leer las notas.</p>
+    </article>
+
+    <article class="tarjeta" id="tDupont">
+      <header>
+        <div>
+          <h3>DuPont</h3>
+          <div class="eyebrow">De dónde sale el ROE · descomposición de 5 pasos</div>
+        </div>
+        <div style="text-align:right">
+          <div class="puntaje" id="roeValor">—</div>
+          <div class="veredicto" id="roeVeredicto">ROE año t</div>
+        </div>
+      </header>
+      <div class="cadena" id="cadenaDupont"></div>
+      <table class="desglose" id="dTabla"></table>
+    </article>
+  </section>
+
+  <footer class="pie">
+    <h4>Antes de usar esto en una decisión</h4>
+    <ul>
+      <li>Los cuatro modelos piden <strong>cifras anuales</strong>. Un trimestre suelto da resultados sin sentido en Piotroski y Beneish, que comparan año contra año.</li>
+      <li>Altman calibró el Z original con manufactureras estadounidenses que cotizaban en bolsa, muestra 1946–1965. Para servicios, privadas o mercados emergentes usa la variante Z″ y trata los cortes como indicativos.</li>
+      <li>Beneish calibró el M-Score con empresas sancionadas por la SEC entre 1982 y 1992, bajo US GAAP. Bajo IFRS varios índices se comportan distinto, sobre todo AQI y DEPI.</li>
+      <li>Piotroski diseñó el F-Score para carteras de valor (alto valor en libros sobre precio). Aplicado a una empresa de crecimiento, un puntaje bajo no significa lo mismo.</li>
+      <li>Ninguno funciona en bancos, aseguradoras ni empresas financieras: el capital de trabajo y el apalancamiento no significan lo mismo en su balance.</li>
+    </ul>
+  </footer>
+</main>
+
+<script>
+"use strict";
+
+/* ---------- Definición de la captura ---------- */
+const CAMPOS = [
+  {g:"Estado de resultados", campos:[
+    {k:"ventas",   n:"Ventas netas"},
+    {k:"costo",    n:"Costo de ventas"},
+    {k:"gav",      n:"Gastos de venta y administración"},
+    {k:"depr",     n:"Depreciación y amortización"},
+    {k:"ebit",     n:"Utilidad de operación (EBIT)"},
+    {k:"ebt",      n:"Utilidad antes de impuestos"},
+    {k:"neta",     n:"Utilidad neta"}
+  ]},
+  {g:"Balance — activo", campos:[
+    {k:"circulante", n:"Activo circulante"},
+    {k:"cxc",        n:"Clientes y cuentas por cobrar"},
+    {k:"ppe",        n:"Propiedad, planta y equipo neto"},
+    {k:"valores",    n:"Inversiones y valores negociables"},
+    {k:"activo",     n:"Activo total"}
+  ]},
+  {g:"Balance — pasivo y capital", campos:[
+    {k:"pasCirc",  n:"Pasivo circulante"},
+    {k:"deudaLp",  n:"Deuda de largo plazo"},
+    {k:"pasivo",   n:"Pasivo total"},
+    {k:"retenidas",n:"Utilidades retenidas acumuladas"},
+    {k:"capital",  n:"Capital contable"}
+  ]},
+  {g:"Flujo y mercado", campos:[
+    {k:"cfo",     n:"Flujo de efectivo de operación"},
+    {k:"acciones",n:"Acciones en circulación"},
+    {k:"precio",  n:"Precio por acción (solo año t)", soloT:true}
+  ]}
+];
+
+const form = document.getElementById("formulario");
+CAMPOS.forEach(function(bloque){
+  const sec = document.createElement("div");
+  sec.className = "grupo";
+  const h = document.createElement("h2");
+  h.textContent = bloque.g;
+  sec.appendChild(h);
+  bloque.campos.forEach(function(c){
+    const fila = document.createElement("div");
+    fila.className = "fila" + (c.soloT ? " solo-t" : "");
+    const lab = document.createElement("label");
+    lab.textContent = c.n;
+    lab.setAttribute("for", c.k + "_t");
+    fila.appendChild(lab);
+    ["t","p"].forEach(function(anio){
+      if (c.soloT && anio === "p") return;
+      const inp = document.createElement("input");
+      inp.type = "number";
+      inp.step = "any";
+      inp.id = c.k + "_" + anio;
+      inp.setAttribute("aria-label", c.n + (anio === "t" ? " año t" : " año t menos 1"));
+      inp.addEventListener("input", calcular);
+      fila.appendChild(inp);
+    });
+    sec.appendChild(fila);
+  });
+  form.appendChild(sec);
+});
+
+/* ---------- Utilidades ---------- */
+function v(k, anio){
+  const el = document.getElementById(k + "_" + anio);
+  if (!el || el.value === "") return null;
+  const x = parseFloat(el.value);
+  return isFinite(x) ? x : null;
+}
+function div(a, b){
+  if (a === null || b === null || b === 0) return null;
+  return a / b;
+}
+function num(x, d){
+  if (x === null || x === undefined || !isFinite(x)) return "—";
+  return x.toFixed(d === undefined ? 2 : d);
+}
+function pct(x){
+  if (x === null || !isFinite(x)) return "—";
+  return (x * 100).toFixed(1) + "%";
+}
+function marca(ok){
+  if (ok === null) return "";
+  return ok ? "✓" : "·";
+}
+function posicion(valor, min, max){
+  if (valor === null || !isFinite(valor)) return null;
+  const p = (valor - min) / (max - min);
+  return Math.max(0, Math.min(1, p)) * 100;
+}
+function pintar(elId, clase, texto){
+  const el = document.getElementById(elId);
+  el.className = "veredicto " + clase;
+  el.textContent = texto;
+}
+
+/* ---------- Altman ---------- */
+function altman(){
+  const variante = document.getElementById("selVariante").value;
+  const ta = v("activo","t");
+  const ct = (v("circulante","t") !== null && v("pasCirc","t") !== null) ? v("circulante","t") - v("pasCirc","t") : null;
+  const x1 = div(ct, ta);
+  const x2 = div(v("retenidas","t"), ta);
+  const x3 = div(v("ebit","t"), ta);
+  const capMercado = (v("acciones","t") !== null && v("precio","t") !== null) ? v("acciones","t") * v("precio","t") : null;
+  const x4 = variante === "original" ? div(capMercado, v("pasivo","t")) : div(v("capital","t"), v("pasivo","t"));
+  const x5 = div(v("ventas","t"), ta);
+
+  let z = null, coef, filas, c1, c2, min, max;
+  if (variante === "original"){
+    coef = [1.2, 1.4, 3.3, 0.6, 1.0];
+    const xs = [x1, x2, x3, x4, x5];
+    if (xs.every(function(x){ return x !== null; })){
+      z = xs.reduce(function(s, x, i){ return s + x * coef[i]; }, 0);
+    }
+    filas = [
+      ["X1 · Capital de trabajo / Activo total", x1, coef[0]],
+      ["X2 · Utilidades retenidas / Activo total", x2, coef[1]],
+      ["X3 · EBIT / Activo total", x3, coef[2]],
+      ["X4 · Valor de mercado del capital / Pasivo total", x4, coef[3]],
+      ["X5 · Ventas / Activo total", x5, coef[4]]
+    ];
+    c1 = 1.81; c2 = 2.99; min = 0; max = 6;
+  } else {
+    coef = [6.56, 3.26, 6.72, 1.05];
+    const xs = [x1, x2, x3, x4];
+    if (xs.every(function(x){ return x !== null; })){
+      z = xs.reduce(function(s, x, i){ return s + x * coef[i]; }, 0);
+    }
+    filas = [
+      ["X1 · Capital de trabajo / Activo total", x1, coef[0]],
+      ["X2 · Utilidades retenidas / Activo total", x2, coef[1]],
+      ["X3 · EBIT / Activo total", x3, coef[2]],
+      ["X4 · Capital contable / Pasivo total", x4, coef[3]]
+    ];
+    c1 = 1.1; c2 = 2.6; min = -2; max = 8;
+  }
+
+  document.getElementById("zValor").textContent = num(z);
+  document.getElementById("zMin").textContent = min.toFixed(2);
+  document.getElementById("zCorte1").textContent = c1.toFixed(2);
+  document.getElementById("zCorte2").textContent = c2.toFixed(2);
+  document.getElementById("zMax").textContent = max.toFixed(2);
+
+  const pista = document.querySelector("#tAltman .pista");
+  pista.children[0].style.flex = String(c1 - min);
+  pista.children[1].style.flex = String(c2 - c1);
+  pista.children[2].style.flex = String(max - c2);
+
+  const p = posicion(z, min, max);
+  document.getElementById("zAguja").style.left = (p === null ? 0 : p) + "%";
+
+  if (z === null) pintar("zVeredicto","", "faltan datos");
+  else if (z >= c2) pintar("zVeredicto","v-bien","zona segura");
+  else if (z >= c1) pintar("zVeredicto","v-gris","zona gris");
+  else pintar("zVeredicto","v-mal","zona de quiebra");
+
+  let html = "<tr><th>Componente</th><th>Valor</th><th>Peso</th><th>Aporte</th></tr>";
+  filas.forEach(function(f){
+    const aporte = f[1] === null ? null : f[1] * f[2];
+    html += "<tr><th>" + f[0] + "</th><td>" + num(f[1], 3) + "</td><td>" + f[2].toFixed(2) + "</td><td>" + num(aporte) + "</td></tr>";
+  });
+  document.getElementById("zTabla").innerHTML = html;
+  return z;
+}
+
+/* ---------- Piotroski ---------- */
+function piotroski(){
+  const roaT = div(v("neta","t"), v("activo","t"));
+  const roaP = div(v("neta","p"), v("activo","p"));
+  const cfoT = v("cfo","t");
+  const razonT = div(v("circulante","t"), v("pasCirc","t"));
+  const razonP = div(v("circulante","p"), v("pasCirc","p"));
+  const apalT = div(v("deudaLp","t"), v("activo","t"));
+  const apalP = div(v("deudaLp","p"), v("activo","p"));
+  const mbT = div(v("ventas","t") !== null && v("costo","t") !== null ? v("ventas","t") - v("costo","t") : null, v("ventas","t"));
+  const mbP = div(v("ventas","p") !== null && v("costo","p") !== null ? v("ventas","p") - v("costo","p") : null, v("ventas","p"));
+  const rotT = div(v("ventas","t"), v("activo","t"));
+  const rotP = div(v("ventas","p"), v("activo","p"));
+  const accT = v("acciones","t"), accP = v("acciones","p");
+
+  function cmp(a, b){ return (a === null || b === null) ? null : (a > b); }
+
+  const senales = [
+    ["ROA positivo", roaT === null ? null : roaT > 0],
+    ["Flujo de operación positivo", cfoT === null ? null : cfoT > 0],
+    ["ROA creciente", cmp(roaT, roaP)],
+    ["Flujo de operación mayor que utilidad neta", cmp(cfoT, v("neta","t"))],
+    ["Deuda de largo plazo a la baja", (apalT === null || apalP === null) ? null : apalT < apalP],
+    ["Razón circulante al alza", cmp(razonT, razonP)],
+    ["Sin emisión de acciones nuevas", (accT === null || accP === null) ? null : accT <= accP],
+    ["Margen bruto al alza", cmp(mbT, mbP)],
+    ["Rotación de activos al alza", cmp(rotT, rotP)]
+  ];
+
+  const respondidas = senales.filter(function(s){ return s[1] !== null; }).length;
+  const f = senales.reduce(function(s, x){ return s + (x[1] === true ? 1 : 0); }, 0);
+
+  document.getElementById("fValor").textContent = respondidas === 0 ? "—" : f + " / 9";
+  const p = posicion(f, 0, 9);
+  document.getElementById("fAguja").style.left = (p === null ? 0 : p) + "%";
+
+  if (respondidas < 9) pintar("fVeredicto","", respondidas + " de 9 evaluables");
+  else if (f >= 8) pintar("fVeredicto","v-bien","fundamentales fuertes");
+  else if (f >= 3) pintar("fVeredicto","v-gris","intermedia");
+  else pintar("fVeredicto","v-mal","fundamentales débiles");
+
+  const cont = document.getElementById("fSenales");
+  cont.innerHTML = "";
+  senales.forEach(function(s){
+    const d = document.createElement("div");
+    d.className = "senal " + (s[1] === true ? "si" : s[1] === false ? "no" : "");
+    d.innerHTML = '<span class="caja">' + (s[1] === true ? "1" : s[1] === false ? "0" : "?") + '</span><span>' + s[0] + '</span>';
+    cont.appendChild(d);
+  });
+  return f;
+}
+
+/* ---------- Beneish ---------- */
+function beneish(){
+  const dsri = div(div(v("cxc","t"), v("ventas","t")), div(v("cxc","p"), v("ventas","p")));
+
+  const mbT = div(v("ventas","t") !== null && v("costo","t") !== null ? v("ventas","t") - v("costo","t") : null, v("ventas","t"));
+  const mbP = div(v("ventas","p") !== null && v("costo","p") !== null ? v("ventas","p") - v("costo","p") : null, v("ventas","p"));
+  const gmi = div(mbP, mbT);
+
+  function calidad(anio){
+    const ta = v("activo", anio);
+    const ca = v("circulante", anio), ppe = v("ppe", anio);
+    const val = v("valores", anio) === null ? 0 : v("valores", anio);
+    if (ta === null || ca === null || ppe === null) return null;
+    return 1 - (ca + ppe + val) / ta;
+  }
+  const aqi = div(calidad("t"), calidad("p"));
+  const sgi = div(v("ventas","t"), v("ventas","p"));
+
+  function tasaDepr(anio){
+    const d = v("depr", anio), p = v("ppe", anio);
+    if (d === null || p === null || (d + p) === 0) return null;
+    return d / (d + p);
+  }
+  const depi = div(tasaDepr("p"), tasaDepr("t"));
+  const sgai = div(div(v("gav","t"), v("ventas","t")), div(v("gav","p"), v("ventas","p")));
+  const tata = div(v("neta","t") !== null && v("cfo","t") !== null ? v("neta","t") - v("cfo","t") : null, v("activo","t"));
+
+  function apal(anio){
+    const cl = v("pasCirc", anio), ld = v("deudaLp", anio), ta = v("activo", anio);
+    if (cl === null || ld === null || ta === null || ta === 0) return null;
+    return (cl + ld) / ta;
+  }
+  const lvgi = div(apal("t"), apal("p"));
+
+  const comps = [
+    ["DSRI · Días de cuentas por cobrar", dsri, 0.920],
+    ["GMI · Deterioro del margen bruto", gmi, 0.528],
+    ["AQI · Calidad del activo", aqi, 0.404],
+    ["SGI · Crecimiento de ventas", sgi, 0.892],
+    ["DEPI · Desaceleración de la depreciación", depi, 0.115],
+    ["SGAI · Gastos de venta y administración", sgai, -0.172],
+    ["TATA · Devengos totales sobre activo", tata, 4.679],
+    ["LVGI · Apalancamiento", lvgi, -0.327]
+  ];
+
+  let m = null;
+  if (comps.every(function(c){ return c[1] !== null && isFinite(c[1]); })){
+    m = -4.84 + comps.reduce(function(s, c){ return s + c[1] * c[2]; }, 0);
+  }
+
+  document.getElementById("mValor").textContent = num(m);
+  const p = posicion(m, -5, 1);
+  document.getElementById("mAguja").style.left = (p === null ? 0 : p) + "%";
+
+  if (m === null) pintar("mVeredicto","", "faltan datos");
+  else if (m > -1.78) pintar("mVeredicto","v-mal","revisar a fondo");
+  else pintar("mVeredicto","v-bien","perfil normal");
+
+  let html = "<tr><th>Índice</th><th>Valor</th><th>Peso</th><th>Aporte</th></tr>";
+  html += "<tr><th>Constante</th><td>—</td><td>—</td><td>-4.840</td></tr>";
+  comps.forEach(function(c){
+    const aporte = c[1] === null ? null : c[1] * c[2];
+    html += "<tr><th>" + c[0] + "</th><td>" + num(c[1], 3) + "</td><td>" + c[2].toFixed(3) + "</td><td>" + num(aporte, 3) + "</td></tr>";
+  });
+  document.getElementById("mTabla").innerHTML = html;
+  return m;
+}
+
+/* ---------- DuPont ---------- */
+function dupont(){
+  const cargaFiscal = div(v("neta","t"), v("ebt","t"));
+  const cargaInteres = div(v("ebt","t"), v("ebit","t"));
+  const margenOp = div(v("ebit","t"), v("ventas","t"));
+  const rotacion = div(v("ventas","t"), v("activo","t"));
+  const multiplicador = div(v("activo","t"), v("capital","t"));
+
+  const partes = [cargaFiscal, cargaInteres, margenOp, rotacion, multiplicador];
+  let roe = null;
+  if (partes.every(function(x){ return x !== null; })){
+    roe = partes.reduce(function(a, b){ return a * b; }, 1);
+  }
+
+  document.getElementById("roeValor").textContent = pct(roe);
+
+  const etiquetas = [
+    ["Carga fiscal", cargaFiscal, "Neta ÷ UAI"],
+    ["Carga financiera", cargaInteres, "UAI ÷ EBIT"],
+    ["Margen operativo", margenOp, "EBIT ÷ Ventas"],
+    ["Rotación de activos", rotacion, "Ventas ÷ Activo"],
+    ["Apalancamiento", multiplicador, "Activo ÷ Capital"]
+  ];
+
+  const cont = document.getElementById("cadenaDupont");
+  cont.innerHTML = "";
+  etiquetas.forEach(function(e, i){
+    if (i > 0){
+      const op = document.createElement("div");
+      op.className = "operador";
+      op.textContent = "×";
+      cont.appendChild(op);
+    }
+    const d = document.createElement("div");
+    d.className = "eslabon";
+    d.innerHTML = "<b>" + num(e[1], 3) + "</b><small>" + e[0] + "<br>" + e[2] + "</small>";
+    cont.appendChild(d);
+  });
+  const ig = document.createElement("div");
+  ig.className = "operador";
+  ig.textContent = "=";
+  cont.appendChild(ig);
+  const res = document.createElement("div");
+  res.className = "eslabon resultado";
+  res.innerHTML = "<b>" + pct(roe) + "</b><small>ROE</small>";
+  cont.appendChild(res);
+
+  const roa = div(v("neta","t"), v("activo","t"));
+  const roeAnt = (function(){
+    const a = div(v("neta","p"), v("capital","p"));
+    return a;
+  })();
+  let html = "<tr><th>Referencia</th><th>Año t</th><th>Año t−1</th></tr>";
+  html += "<tr><th>ROE</th><td>" + pct(roe) + "</td><td>" + pct(roeAnt) + "</td></tr>";
+  html += "<tr><th>ROA</th><td>" + pct(roa) + "</td><td>" + pct(div(v("neta","p"), v("activo","p"))) + "</td></tr>";
+  html += "<tr><th>Margen neto</th><td>" + pct(div(v("neta","t"), v("ventas","t"))) + "</td><td>" + pct(div(v("neta","p"), v("ventas","p"))) + "</td></tr>";
+  document.getElementById("dTabla").innerHTML = html;
+  return roe;
+}
+
+/* ---------- Avisos de captura ---------- */
+function avisos(){
+  const cont = document.getElementById("avisos");
+  cont.innerHTML = "";
+  const faltan = [];
+  CAMPOS.forEach(function(b){
+    b.campos.forEach(function(c){
+      if (v(c.k, "t") === null) faltan.push(c.n + " (t)");
+      if (!c.soloT && v(c.k, "p") === null) faltan.push(c.n + " (t−1)");
+    });
+  });
+  if (faltan.length > 0){
+    const d = document.createElement("div");
+    d.className = "aviso faltante";
+    d.innerHTML = "<strong>Faltan " + faltan.length + " cifras.</strong> Cada modelo se calcula solo cuando tiene todos sus insumos. Pendientes: " + faltan.slice(0, 6).join(", ") + (faltan.length > 6 ? " y " + (faltan.length - 6) + " más." : ".");
+    cont.appendChild(d);
+  }
+  const ta = v("activo","t"), pt = v("pasivo","t"), ct = v("capital","t");
+  if (ta !== null && pt !== null && ct !== null){
+    const desc = Math.abs(ta - (pt + ct)) / Math.abs(ta);
+    if (desc > 0.01){
+      const d = document.createElement("div");
+      d.className = "aviso";
+      d.textContent = "El balance no cuadra: activo total difiere de pasivo más capital en " + (desc * 100).toFixed(1) + "%. Revisa la captura antes de leer los resultados.";
+      cont.appendChild(d);
+    }
+  }
+}
+
+/* ---------- Orquestador ---------- */
+function calcular(){
+  avisos();
+  altman();
+  piotroski();
+  beneish();
+  dupont();
+}
+document.getElementById("selVariante").addEventListener("change", calcular);
+document.getElementById("selMoneda").addEventListener("change", calcular);
+
+/* ---------- Empresas precargadas ---------- */
+function llenarSelect(datos){
+  const sel = document.getElementById("selEmpresa");
+  Object.keys(datos).sort().forEach(function(clave){
+    const o = document.createElement("option");
+    o.value = clave;
+    o.textContent = datos[clave].nombre || clave;
+    sel.appendChild(o);
+  });
+  sel.addEventListener("change", function(){
+    const d = datos[sel.value];
+    if (!d) return;
+    ["t","p"].forEach(function(anio){
+      CAMPOS.forEach(function(b){
+        b.campos.forEach(function(c){
+          const el = document.getElementById(c.k + "_" + anio);
+          if (!el) return;
+          const val = d[anio] ? d[anio][c.k] : undefined;
+          el.value = (val === undefined || val === null) ? "" : val;
+        });
+      });
+    });
+    calcular();
+  });
+}
+
+fetch("empresas.json")
+  .then(function(r){ if (!r.ok) throw new Error("sin archivo"); return r.json(); })
+  .then(llenarSelect)
+  .catch(function(){
+    const sel = document.getElementById("selEmpresa");
+    const o = document.createElement("option");
+    o.disabled = true;
+    o.textContent = "(no se encontró empresas.json)";
+    sel.appendChild(o);
+  });
+
+/* ---------- Exportar ---------- */
+document.getElementById("btnCsv").addEventListener("click", function(){
+  const lineas = [["Concepto","Año t","Año t-1"]];
+  CAMPOS.forEach(function(b){
+    b.campos.forEach(function(c){
+      lineas.push([c.n, v(c.k,"t"), c.soloT ? "" : v(c.k,"p")]);
+    });
+  });
+  lineas.push([]);
+  lineas.push(["Altman Z-Score", document.getElementById("zValor").textContent, document.getElementById("zVeredicto").textContent]);
+  lineas.push(["Piotroski F-Score", document.getElementById("fValor").textContent, document.getElementById("fVeredicto").textContent]);
+  lineas.push(["Beneish M-Score", document.getElementById("mValor").textContent, document.getElementById("mVeredicto").textContent]);
+  lineas.push(["ROE (DuPont)", document.getElementById("roeValor").textContent, ""]);
+
+  const csv = lineas.map(function(f){
+    return f.map(function(x){
+      return '"' + String(x === null || x === undefined ? "" : x).replace(/"/g,'""') + '"';
+    }).join(",");
+  }).join("\n");
+
+  const blob = new Blob(["\ufeff" + csv], {type:"text/csv;charset=utf-8"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "diagnostico-financiero.csv";
+  a.click();
+  URL.revokeObjectURL(a.href);
+});
+
+document.getElementById("btnLimpiar").addEventListener("click", function(){
+  document.querySelectorAll('#formulario input').forEach(function(i){ i.value = ""; });
+  document.getElementById("selEmpresa").value = "";
+  calcular();
+});
+
+calcular();
+</script>
+</body>
+</html>
