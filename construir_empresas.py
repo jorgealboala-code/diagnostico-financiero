@@ -82,6 +82,8 @@ INSTANTE = {
                 "StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"],
 }
 
+ACCIONES_PORTADA = ["EntityCommonStockSharesOutstanding"]
+
 ACCIONES = ["CommonStockSharesOutstanding", "CommonStockSharesIssued",
             "WeightedAverageNumberOfDilutedSharesOutstanding",
             "WeightedAverageNumberOfSharesOutstandingBasic"]
@@ -105,11 +107,11 @@ def dia(texto):
     return date(int(texto[0:4]), int(texto[5:7]), int(texto[8:10]))
 
 
-def registros(hechos, etiquetas, unidad="USD"):
+def registros(hechos, etiquetas, unidad="USD", taxonomia="us-gaap"):
     """Junta todos los registros de las etiquetas dadas, en orden de preferencia."""
     salida = []
     for prioridad, etiqueta in enumerate(etiquetas):
-        nodo = hechos.get("us-gaap", {}).get(etiqueta)
+        nodo = hechos.get(taxonomia, {}).get(etiqueta)
         if not nodo:
             continue
         for uni, lista in nodo.get("units", {}).items():
@@ -158,13 +160,13 @@ def valor_duracion(hechos, etiquetas, inicio, fin):
     return candidatos[0][2]
 
 
-def valor_instante(hechos, etiquetas, fecha, unidad="USD"):
+def valor_instante(hechos, etiquetas, fecha, unidad="USD", holgura=7, taxonomia="us-gaap"):
     candidatos = []
-    for reg in registros(hechos, etiquetas, unidad):
+    for reg in registros(hechos, etiquetas, unidad, taxonomia):
         if "start" in reg:
             continue
         try:
-            if abs((dia(reg["end"]) - dia(fecha)).days) > 7:
+            if abs((dia(reg["end"]) - dia(fecha)).days) > holgura:
                 continue
         except (ValueError, KeyError):
             continue
@@ -183,7 +185,12 @@ def extraer(hechos, cierre, cierre_previo):
         fila[campo] = valor_duracion(hechos, etiquetas, cierre_previo, cierre)
     for campo, etiquetas in INSTANTE.items():
         fila[campo] = valor_instante(hechos, etiquetas, cierre)
-    fila["acciones"] = valor_instante(hechos, ACCIONES, cierre, "shares")
+    # Las acciones en circulacion vienen en la portada del 10-K, con fecha
+    # posterior al cierre. Por eso la holgura amplia y la busqueda en dei.
+    fila["acciones"] = (
+        valor_instante(hechos, ACCIONES, cierre, "shares")
+        or valor_instante(hechos, ACCIONES_PORTADA, cierre, "shares", 150, "dei")
+        or valor_instante(hechos, ACCIONES, cierre, "shares", 150))
     fila["precio"] = None
 
     # Derivaciones contables exactas, para rubros que muchas emisoras no etiquetan.
@@ -192,8 +199,8 @@ def extraer(hechos, cierre, cierre_previo):
     if fila["deudaLp"] is None and fila["pasivo"] is not None and fila["pasCirc"] is not None:
         # Aproximacion: todo el pasivo que no es circulante.
         fila["deudaLp"] = fila["pasivo"] - fila["pasCirc"]
-    if fila["ebit"] is None and fila["ebt"] is not None:
-        fila["ebit"] = None  # sin gasto financiero no se puede derivar de forma limpia
+    if fila["ebit"] is None and None not in (fila["ventas"], fila["costo"], fila["gav"]):
+        fila["ebit"] = fila["ventas"] - fila["costo"] - fila["gav"]
     if fila["costo"] is None and fila["ventas"] is not None and fila["ebit"] is not None \
             and fila["gav"] is not None:
         fila["costo"] = fila["ventas"] - fila["gav"] - fila["ebit"]
