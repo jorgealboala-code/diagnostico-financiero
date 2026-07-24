@@ -1,0 +1,50 @@
+name: Actualizar datos
+
+# Se dispara de dos formas:
+#   1. Con el boton "Run workflow" en la pestaña Actions.
+#   2. Solo, el dia 5 de cada mes a las 9:00 UTC.
+on:
+  workflow_dispatch:
+    inputs:
+      tickers:
+        description: "Empresas, separadas por coma. Ejemplo: KO,PEP,WMT,NKE,CAT"
+        required: true
+        default: "KO,PEP,WMT,NKE,CAT,COST,MCD,SBUX,F,GM"
+      anio:
+        description: "Ejercicio mas reciente"
+        required: true
+        default: "2024"
+  schedule:
+    - cron: "0 9 5 * *"
+
+permissions:
+  contents: write
+
+jobs:
+  actualizar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Bajar datos de EDGAR
+        env:
+          SEC_CONTACTO: ${{ secrets.SEC_CONTACTO }}
+          TICKERS: ${{ github.event.inputs.tickers || 'KO,PEP,WMT,NKE,CAT,COST,MCD,SBUX,F,GM' }}
+          ANIO: ${{ github.event.inputs.anio || '2024' }}
+        run: python3 construir_empresas.py
+
+      - name: Guardar el resultado
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add empresas.json
+          if git diff --staged --quiet; then
+            echo "Sin cambios."
+          else
+            git commit -m "Actualiza empresas.json desde EDGAR"
+            git push
+          fi
