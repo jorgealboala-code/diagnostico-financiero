@@ -126,6 +126,73 @@ select:focus,input:focus,button:focus-visible,summary:focus-visible{
   line-height:1.4;
 }
 
+/* ---------- Fila resumen ---------- */
+.resumen{
+  position:sticky;
+  top:0;
+  z-index:20;
+  background:var(--blanco);
+  border-bottom:1px solid var(--g150);
+  padding:0 30px;
+}
+.resumen .interior{
+  max-width:1600px;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+}
+.celda{
+  padding:12px 16px 11px;
+  border-left:1px solid var(--g150);
+  border-top:3px solid var(--g200);
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:12px;
+  transition:border-color .2s ease, background .2s ease;
+}
+.celda:first-child{border-left:none}
+.celda .nombre{
+  font-family:var(--mono);
+  font-size:9.5px;
+  letter-spacing:.13em;
+  text-transform:uppercase;
+  color:var(--g500);
+  line-height:1.35;
+}
+.celda .cifra{
+  font-family:var(--serif);
+  font-size:25px;
+  line-height:1;
+  font-variant-numeric:tabular-nums;
+  color:var(--g400);
+  white-space:nowrap;
+}
+.celda .estado{
+  display:block;
+  font-family:var(--mono);
+  font-size:9px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  margin-top:3px;
+  color:var(--g400);
+}
+.celda.bien{border-top-color:var(--tec);background:var(--tec-050)}
+.celda.bien .cifra,.celda.bien .estado{color:var(--tec)}
+.celda.medio{border-top-color:var(--g400);background:var(--g075)}
+.celda.medio .cifra,.celda.medio .estado{color:var(--g700)}
+.celda.mal{border-top-color:var(--alerta);background:var(--alerta-bg)}
+.celda.mal .cifra,.celda.mal .estado{color:var(--alerta)}
+
+@media (max-width:760px){
+  .resumen{padding:0 14px}
+  .resumen .interior{grid-template-columns:repeat(2,1fr)}
+  .celda{border-top-width:3px}
+  .celda:nth-child(3){border-left:none}
+  .celda:nth-child(n+3){border-top-style:solid}
+  .celda .cifra{font-size:21px}
+}
+
 /* ---------- Lienzo ---------- */
 .lienzo{
   display:grid;
@@ -420,6 +487,27 @@ details.explicacion .fuente a{color:var(--tec)}
       </select>
     </div>
     <div class="sello" id="sello"></div>
+  </div>
+</div>
+
+<div class="resumen" aria-label="Resumen de los cuatro modelos">
+  <div class="interior">
+    <div class="celda" id="rAltman">
+      <span class="nombre">Altman<br>Z-Score</span>
+      <span><span class="cifra">—</span><span class="estado">sin datos</span></span>
+    </div>
+    <div class="celda" id="rPiotroski">
+      <span class="nombre">Piotroski<br>F-Score</span>
+      <span><span class="cifra">—</span><span class="estado">sin datos</span></span>
+    </div>
+    <div class="celda" id="rBeneish">
+      <span class="nombre">Beneish<br>M-Score</span>
+      <span><span class="cifra">—</span><span class="estado">sin datos</span></span>
+    </div>
+    <div class="celda" id="rDupont">
+      <span class="nombre">DuPont<br>ROE</span>
+      <span><span class="cifra">—</span><span class="estado">sin datos</span></span>
+    </div>
   </div>
 </div>
 
@@ -1168,6 +1256,45 @@ function pintarAvisos(t, p){
   }
 }
 
+function celda(id, cifra, estado, clase){
+  const el = document.getElementById(id);
+  el.className = "celda " + clase;
+  el.querySelector(".cifra").textContent = cifra;
+  el.querySelector(".estado").textContent = estado;
+}
+
+function pintarResumen(t, p, variante){
+  // Altman
+  const a = calcAltman(t, variante);
+  const c = a.cortes;
+  if (a.z === null) celda("rAltman", "—", "sin datos", "");
+  else if (a.z >= c.c2) celda("rAltman", dec(a.z,2), "zona segura", "bien");
+  else if (a.z >= c.c1) celda("rAltman", dec(a.z,2), "zona gris", "medio");
+  else celda("rAltman", dec(a.z,2), "insolvencia", "mal");
+
+  // Piotroski
+  const f = calcPiotroski(t, p);
+  if (f.evaluables === 0) celda("rPiotroski", "—", "sin datos", "");
+  else if (f.evaluables < 9) celda("rPiotroski", f.f + "/9", "parcial", "medio");
+  else if (f.f >= 8) celda("rPiotroski", f.f + "/9", "sólida", "bien");
+  else if (f.f >= 3) celda("rPiotroski", f.f + "/9", "intermedia", "medio");
+  else celda("rPiotroski", f.f + "/9", "débil", "mal");
+
+  // Beneish
+  const m = calcBeneish(t, p);
+  if (m.m === null) celda("rBeneish", "—", "sin datos", "");
+  else if (m.m > -1.78) celda("rBeneish", dec(m.m,2), "amerita revisión", "mal");
+  else celda("rBeneish", dec(m.m,2), "perfil ordinario", "bien");
+
+  // DuPont. No tiene corte teórico: se contrasta contra el ejercicio anterior.
+  const d = calcDupont(t);
+  const roePrevio = razon(p.neta, p.capital);
+  if (d.roe === null) celda("rDupont", "—", "sin datos", "");
+  else if (roePrevio === null) celda("rDupont", pct(d.roe,1), "sin comparativo", "medio");
+  else if (d.roe > roePrevio) celda("rDupont", pct(d.roe,1), "al alza", "bien");
+  else celda("rDupont", pct(d.roe,1), "a la baja", "medio");
+}
+
 function calcular(){
   const t = leerPeriodo("t"), p = leerPeriodo("p");
   pintarAvisos(t, p);
@@ -1175,6 +1302,7 @@ function calcular(){
   pintarPiotroski(t, p);
   pintarBeneish(t, p);
   pintarDupont(t, p);
+  pintarResumen(t, p, variante);
   pintarSeries(variante);
 }
 
