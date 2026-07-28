@@ -3,890 +3,1341 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Hoja de diagnóstico financiero</title>
+<title>Hoja de Diagnóstico Financiero</title>
 <style>
 :root{
-  --papel:#E9ECE5;
-  --papel-alt:#DFE4DA;
-  --tinta:#16232B;
-  --tinta-suave:#5A6B72;
-  --regla:#BEC7BC;
-  --teal:#1F6F6B;
-  --ambar:#B07708;
-  --oxido:#96371F;
-  --realce:#FFFDF4;
-  --serif:Georgia,"Iowan Old Style","Times New Roman",serif;
+  --tec:#0039a6;
+  --tec-900:#00266e;
+  --tec-100:#e6ecf7;
+  --tec-050:#f4f7fc;
+  --blanco:#ffffff;
+  --g900:#1c1f23;
+  --g700:#3d4650;
+  --g500:#6b7581;
+  --g400:#8b95a1;
+  --g300:#b9c1cb;
+  --g200:#d4dae1;
+  --g150:#e2e7ec;
+  --g075:#f1f4f7;
+  --alerta:#9b2226;
+  --alerta-bg:#f7ebeb;
+  --serif:"Iowan Old Style",Georgia,"Times New Roman",serif;
   --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
   --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
 }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
 body{
-  background:var(--papel);
-  color:var(--tinta);
+  background:var(--blanco);
+  color:var(--g900);
   font-family:var(--sans);
   font-size:15px;
-  line-height:1.5;
+  line-height:1.55;
   -webkit-font-smoothing:antialiased;
 }
-.eyebrow{
+.etiqueta{
   font-family:var(--mono);
   font-size:10px;
-  letter-spacing:.18em;
+  letter-spacing:.16em;
   text-transform:uppercase;
-  color:var(--tinta-suave);
+  color:var(--g500);
 }
+
+/* ---------- Encabezado ---------- */
 .encabezado{
-  border-bottom:2px solid var(--tinta);
-  padding:22px 28px 16px;
+  background:var(--tec);
+  color:var(--blanco);
+  padding:20px 30px 18px;
+}
+.encabezado .interior{
   display:flex;
   flex-wrap:wrap;
-  gap:16px;
+  gap:20px;
   align-items:flex-end;
   justify-content:space-between;
+  max-width:1600px;
+  margin:0 auto;
 }
+.encabezado .etiqueta{color:rgba(255,255,255,.72)}
 .encabezado h1{
   font-family:var(--serif);
-  font-size:30px;
+  font-size:31px;
   font-weight:400;
-  letter-spacing:-.015em;
-  margin:4px 0 0;
+  letter-spacing:-.01em;
+  margin:5px 0 0;
 }
-.encabezado p{margin:6px 0 0;max-width:52ch;color:var(--tinta-suave);font-size:13px}
-.controles{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-
-select,input,button{font-family:inherit;font-size:14px;color:var(--tinta)}
-select,input[type=text],input[type=number]{
-  background:var(--realce);
-  border:1px solid var(--regla);
+.encabezado p{
+  margin:7px 0 0;
+  max-width:60ch;
+  color:rgba(255,255,255,.86);
+  font-size:13.5px;
+}
+.acciones{display:flex;gap:9px;flex-wrap:wrap}
+.acciones button{
+  background:transparent;
+  color:var(--blanco);
+  border:1px solid rgba(255,255,255,.5);
   border-radius:2px;
-  padding:6px 8px;
-}
-input[type=number]{
-  font-family:var(--mono);
-  font-size:13px;
-  text-align:right;
-  font-variant-numeric:tabular-nums;
-  width:100%;
-}
-input[type=number]:focus,select:focus,button:focus-visible{
-  outline:2px solid var(--teal);
-  outline-offset:1px;
-}
-button{
-  background:var(--tinta);
-  color:var(--papel);
-  border:1px solid var(--tinta);
-  border-radius:2px;
-  padding:7px 13px;
+  padding:8px 15px;
+  font-family:inherit;
+  font-size:13.5px;
   cursor:pointer;
 }
-button.fantasma{background:transparent;color:var(--tinta)}
-button:hover{opacity:.85}
+.acciones button:hover{background:rgba(255,255,255,.14)}
+.acciones button.primario{background:var(--blanco);color:var(--tec);border-color:var(--blanco);font-weight:600}
+.acciones button.primario:hover{background:var(--tec-100)}
 
+/* ---------- Barra de selección ---------- */
+.barra{
+  background:var(--tec-050);
+  border-bottom:1px solid var(--g150);
+  padding:13px 30px;
+}
+.barra .interior{
+  max-width:1600px;
+  margin:0 auto;
+  display:flex;
+  flex-wrap:wrap;
+  gap:22px;
+  align-items:center;
+}
+.campo{display:flex;flex-direction:column;gap:3px}
+.campo > label{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--g500)}
+select{
+  background:var(--blanco);
+  border:1px solid var(--g200);
+  border-radius:2px;
+  padding:7px 9px;
+  font-family:inherit;
+  font-size:14px;
+  color:var(--g900);
+  min-width:150px;
+}
+select:focus,input:focus,button:focus-visible,summary:focus-visible{
+  outline:2px solid var(--tec);
+  outline-offset:1px;
+}
+.sello{
+  margin-left:auto;
+  font-family:var(--mono);
+  font-size:11px;
+  color:var(--g500);
+  text-align:right;
+  line-height:1.4;
+}
+
+/* ---------- Lienzo ---------- */
 .lienzo{
   display:grid;
-  grid-template-columns:minmax(360px,42%) 1fr;
+  grid-template-columns:minmax(370px,38%) 1fr;
   align-items:start;
+  max-width:1600px;
+  margin:0 auto;
 }
-.captura{
-  border-right:1px solid var(--regla);
-  padding:20px 24px 60px;
-}
-.diagnostico{padding:20px 26px 60px;min-width:0}
+.captura{border-right:1px solid var(--g150);padding:22px 26px 70px}
+.resultados{padding:22px 28px 70px;min-width:0}
 
-.grupo{margin-bottom:22px}
+/* ---------- Formulario ---------- */
+.grupo{margin-bottom:24px}
 .grupo h2{
   font-family:var(--mono);
   font-size:10px;
-  letter-spacing:.18em;
+  letter-spacing:.16em;
   text-transform:uppercase;
-  color:var(--tinta-suave);
-  font-weight:600;
-  margin:0 0 8px;
-  padding-bottom:5px;
-  border-bottom:1px solid var(--regla);
+  color:var(--tec);
+  font-weight:700;
+  margin:0 0 9px;
+  padding-bottom:6px;
+  border-bottom:1.5px solid var(--tec);
 }
-.fila{
-  display:grid;
-  grid-template-columns:1fr 92px 92px;
-  gap:8px;
-  align-items:center;
-  padding:3px 0;
-}
-.fila label{font-size:13px;line-height:1.3}
-.cabecera-fila{
-  display:grid;
-  grid-template-columns:1fr 92px 92px;
-  gap:8px;
-  padding-bottom:4px;
-}
-.cabecera-fila span{
-  font-family:var(--mono);
-  font-size:10px;
-  letter-spacing:.1em;
-  text-transform:uppercase;
-  color:var(--tinta-suave);
-  text-align:right;
-}
-.cabecera-fila span:first-child{text-align:left}
-.solo-t input{grid-column:2}
-
-.tarjeta{
-  background:var(--realce);
-  border:1px solid var(--regla);
-  border-radius:2px;
-  padding:16px 18px;
-  margin-bottom:16px;
-}
-.tarjeta > header{
-  display:flex;
-  justify-content:space-between;
-  align-items:baseline;
-  gap:12px;
-  margin-bottom:4px;
-}
-.tarjeta h3{
-  font-family:var(--serif);
-  font-size:19px;
-  font-weight:400;
-  margin:0;
-}
-.puntaje{
-  font-family:var(--serif);
-  font-size:34px;
-  line-height:1;
-  font-variant-numeric:tabular-nums;
-}
-.veredicto{
-  font-family:var(--mono);
-  font-size:11px;
-  letter-spacing:.12em;
-  text-transform:uppercase;
-  padding:2px 7px;
-  border:1px solid currentColor;
-  border-radius:2px;
-  white-space:nowrap;
-}
-.v-bien{color:var(--teal)}
-.v-gris{color:var(--ambar)}
-.v-mal{color:var(--oxido)}
-.nota{font-size:12.5px;color:var(--tinta-suave);margin:8px 0 0}
-
-/* Banda de diagnóstico: la firma de la hoja */
-.banda{margin:14px 0 4px}
-.banda .pista{
-  position:relative;
-  height:26px;
-  display:flex;
-  border:1px solid var(--tinta);
-  border-radius:2px;
-  overflow:hidden;
-}
-.banda .zona{flex:1;position:relative}
-.banda .zona span{
-  position:absolute;
-  bottom:3px;
-  left:6px;
-  font-family:var(--mono);
-  font-size:9px;
-  letter-spacing:.1em;
-  text-transform:uppercase;
-  opacity:.75;
-}
-.z-mal{background:rgba(150,55,31,.16)}
-.z-gris{background:rgba(176,119,8,.16)}
-.z-bien{background:rgba(31,111,107,.16)}
-.aguja{
-  position:absolute;
-  top:-5px;
-  bottom:-5px;
-  width:2px;
-  background:var(--tinta);
-  transition:left .25s ease;
-}
-.aguja::after{
-  content:"";
-  position:absolute;
-  top:-4px;
-  left:-4px;
-  border-left:5px solid transparent;
-  border-right:5px solid transparent;
-  border-top:6px solid var(--tinta);
-}
-.escala{
-  display:flex;
-  justify-content:space-between;
+.rejilla{display:grid;grid-template-columns:1fr 116px 116px;gap:9px;align-items:center;padding:3px 0}
+.rejilla.titulos{padding-bottom:5px}
+.rejilla.titulos span{
   font-family:var(--mono);
   font-size:9.5px;
-  color:var(--tinta-suave);
-  margin-top:3px;
-}
-
-.desglose{width:100%;border-collapse:collapse;margin-top:10px}
-.desglose th,.desglose td{
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--g500);
   text-align:right;
-  padding:3px 0;
-  font-size:12.5px;
-  font-variant-numeric:tabular-nums;
-  font-family:var(--mono);
-  border-bottom:1px dotted var(--regla);
 }
-.desglose th{
-  text-align:left;
-  font-weight:400;
-  font-family:var(--sans);
-  color:var(--tinta-suave);
-}
-.desglose td.marca{font-family:var(--sans);width:22px}
-
-.cadena{
-  display:flex;
-  flex-wrap:wrap;
-  align-items:stretch;
-  gap:6px;
-  margin-top:12px;
-}
-.eslabon{
-  flex:1 1 84px;
-  border:1px solid var(--regla);
+.rejilla.titulos span:first-child{text-align:left}
+.rejilla label{font-size:13.5px;line-height:1.3}
+.rejilla input{
+  width:100%;
+  background:var(--blanco);
+  border:1px solid var(--g200);
   border-radius:2px;
-  padding:7px 8px;
-  text-align:center;
-  background:var(--papel-alt);
-}
-.eslabon b{
-  display:block;
+  padding:6px 8px;
   font-family:var(--mono);
-  font-size:15px;
+  font-size:12.5px;
+  text-align:right;
   font-variant-numeric:tabular-nums;
+  color:var(--g900);
 }
-.eslabon small{font-size:10px;color:var(--tinta-suave);line-height:1.2;display:block;margin-top:2px}
-.operador{align-self:center;font-family:var(--serif);font-size:17px;color:var(--tinta-suave)}
-.eslabon.resultado{background:var(--tinta);border-color:var(--tinta);color:var(--papel)}
-.eslabon.resultado small{color:var(--papel-alt)}
+.rejilla input.derivado{background:var(--tec-050);border-color:var(--tec-100);color:var(--tec-900)}
+.rejilla input.aproximado{background:#fdf6ec;border-color:#f0dcc0}
+.solo-t input{grid-column:2}
+.pie-nota{font-size:12.5px;color:var(--g500);margin:10px 0 0;line-height:1.5}
+.leyenda{display:flex;gap:16px;flex-wrap:wrap;margin-top:12px;font-size:11.5px;color:var(--g500)}
+.leyenda span{display:flex;align-items:center;gap:6px}
+.muestra{width:13px;height:13px;border:1px solid var(--g200);border-radius:2px;display:inline-block}
+.muestra.d{background:var(--tec-050);border-color:var(--tec-100)}
+.muestra.a{background:#fdf6ec;border-color:#f0dcc0}
 
-.senales{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:5px;margin-top:12px}
-.senal{
-  display:flex;
-  gap:7px;
-  align-items:flex-start;
-  font-size:12.5px;
-  padding:4px 6px;
-  border-left:3px solid var(--regla);
-  background:var(--papel-alt);
+/* ---------- Tarjetas de resultado ---------- */
+.tarjeta{
+  border:1px solid var(--g150);
+  border-top:3px solid var(--tec);
+  border-radius:2px;
+  padding:18px 20px 16px;
+  margin-bottom:20px;
+  background:var(--blanco);
 }
-.senal.si{border-left-color:var(--teal)}
-.senal.no{border-left-color:var(--oxido);opacity:.62}
-.senal .caja{font-family:var(--mono);font-weight:700}
+.tarjeta > header{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap}
+.tarjeta h3{font-family:var(--serif);font-size:21px;font-weight:400;margin:0}
+.marcador{text-align:right}
+.puntaje{font-family:var(--serif);font-size:38px;line-height:1;font-variant-numeric:tabular-nums;color:var(--tec-900)}
+.dictamen{
+  display:inline-block;
+  font-family:var(--mono);
+  font-size:10.5px;
+  letter-spacing:.11em;
+  text-transform:uppercase;
+  padding:3px 8px;
+  border:1px solid currentColor;
+  border-radius:2px;
+  margin-top:5px;
+  white-space:nowrap;
+}
+.d-bien{color:var(--tec)}
+.d-medio{color:var(--g500)}
+.d-mal{color:var(--alerta)}
 
-.aviso{
-  border-left:3px solid var(--ambar);
-  background:rgba(176,119,8,.09);
-  padding:9px 12px;
-  font-size:12.5px;
-  margin:0 0 16px;
+/* Banda de zonas */
+.banda{margin:16px 0 6px}
+.pista{position:relative;height:28px;display:flex;border:1px solid var(--g300);border-radius:2px;overflow:hidden}
+.zona{flex:1;position:relative}
+.zona span{
+  position:absolute;bottom:4px;left:7px;
+  font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;
 }
-.faltante{border-left-color:var(--oxido);background:rgba(150,55,31,.09)}
+.z-mal{background:var(--alerta-bg)}
+.z-mal span{color:var(--alerta)}
+.z-medio{background:var(--g075)}
+.z-medio span{color:var(--g500)}
+.z-bien{background:var(--tec-100)}
+.z-bien span{color:var(--tec)}
+.aguja{position:absolute;top:-6px;bottom:-6px;width:2px;background:var(--g900);transition:left .3s ease}
+.aguja::after{
+  content:"";position:absolute;top:-3px;left:-4px;
+  border-left:5px solid transparent;border-right:5px solid transparent;
+  border-top:7px solid var(--g900);
+}
+.escala{display:flex;justify-content:space-between;font-family:var(--mono);font-size:9.5px;color:var(--g500);margin-top:4px}
+
+/* Tablas */
+.desglose{width:100%;border-collapse:collapse;margin-top:14px}
+.desglose caption{
+  text-align:left;font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--g500);padding-bottom:6px;
+}
+.desglose th,.desglose td{
+  text-align:right;padding:5px 0;font-size:12.5px;
+  font-variant-numeric:tabular-nums;font-family:var(--mono);
+  border-bottom:1px solid var(--g075);
+}
+.desglose th{text-align:left;font-weight:400;font-family:var(--sans);color:var(--g700)}
+.desglose thead th{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--g500);text-align:right}
+.desglose thead th:first-child{text-align:left}
+
+/* Señales de Piotroski */
+.senales{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:6px;margin-top:14px}
+.senal{display:flex;gap:9px;align-items:flex-start;font-size:12.5px;padding:6px 9px;border-left:3px solid var(--g200);background:var(--g075)}
+.senal.si{border-left-color:var(--tec);background:var(--tec-050)}
+.senal.no{border-left-color:var(--g300);color:var(--g500)}
+.senal .caja{font-family:var(--mono);font-weight:700;min-width:9px}
+.senal.si .caja{color:var(--tec)}
+
+/* Cadena DuPont */
+.cadena{display:flex;flex-wrap:wrap;align-items:stretch;gap:7px;margin-top:14px}
+.eslabon{flex:1 1 96px;border:1px solid var(--g150);border-radius:2px;padding:9px 8px;text-align:center;background:var(--g075)}
+.eslabon b{display:block;font-family:var(--mono);font-size:16px;font-variant-numeric:tabular-nums}
+.eslabon small{font-size:10px;color:var(--g500);line-height:1.25;display:block;margin-top:3px}
+.operador{align-self:center;font-family:var(--serif);font-size:18px;color:var(--g400)}
+.eslabon.total{background:var(--tec);border-color:var(--tec);color:var(--blanco)}
+.eslabon.total small{color:rgba(255,255,255,.8)}
+
+/* Explicaciones */
+details.explicacion{margin-top:16px;border-top:1px solid var(--g150);padding-top:12px}
+details.explicacion summary{
+  cursor:pointer;list-style:none;
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--tec);display:flex;align-items:center;gap:7px;
+}
+details.explicacion summary::-webkit-details-marker{display:none}
+details.explicacion summary::before{content:"+";font-size:14px;line-height:1}
+details.explicacion[open] summary::before{content:"–"}
+details.explicacion .cuerpo{padding:12px 0 2px;max-width:74ch}
+details.explicacion h4{
+  font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--g500);margin:14px 0 4px;font-weight:600;
+}
+details.explicacion h4:first-child{margin-top:0}
+details.explicacion p{margin:0 0 8px;font-size:13.5px;line-height:1.6;color:var(--g700)}
+details.explicacion .formula{
+  font-family:var(--mono);font-size:12.5px;background:var(--tec-050);
+  border-left:3px solid var(--tec);padding:9px 12px;margin:8px 0;
+  color:var(--tec-900);overflow-x:auto;
+}
+details.explicacion .fuente{font-size:12px;color:var(--g500)}
+details.explicacion .fuente a{color:var(--tec)}
+
+/* Gráfica de tendencia */
+.tendencia{margin-top:16px;border-top:1px solid var(--g150);padding-top:14px}
+.tendencia h4{
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--g500);margin:0 0 8px;font-weight:600;
+}
+.tendencia svg{width:100%;height:auto;display:block}
+.sin-serie{font-size:12.5px;color:var(--g400);font-style:italic}
+
+/* Avisos */
+.aviso{border-left:3px solid var(--tec);background:var(--tec-050);padding:11px 14px;font-size:13px;margin:0 0 18px;line-height:1.55}
+.aviso.rojo{border-left-color:var(--alerta);background:var(--alerta-bg)}
+.aviso strong{color:var(--tec-900)}
+.aviso.rojo strong{color:var(--alerta)}
+
+/* Pie */
 .pie{
-  grid-column:1/-1;
-  border-top:1px solid var(--regla);
-  padding:16px 28px 40px;
-  font-size:12px;
-  color:var(--tinta-suave);
+  grid-column:1/-1;border-top:1px solid var(--g150);
+  padding:26px 30px 60px;background:var(--tec-050);
 }
-.pie h4{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;margin:0 0 6px}
-.pie ul{margin:0;padding-left:16px}
-.pie li{margin-bottom:3px}
+.pie .interior{max-width:1600px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:34px}
+.pie h4{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--tec);margin:0 0 10px;font-weight:700}
+.pie ul{margin:0;padding-left:17px;font-size:13px;color:var(--g700);line-height:1.6}
+.pie li{margin-bottom:7px}
+.pie a{color:var(--tec)}
+.ref{font-size:12.5px;color:var(--g700);margin:0 0 12px;line-height:1.55}
+.ref b{font-weight:600;color:var(--g900)}
 
-@media (max-width:900px){
+/* ---------- Presentación ---------- */
+.telon{
+  position:fixed;inset:0;background:var(--tec);color:var(--blanco);
+  z-index:60;display:none;flex-direction:column;
+}
+.telon.visible{display:flex}
+.telon .barra-sup{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:16px 30px;border-bottom:1px solid rgba(255,255,255,.2);flex-shrink:0;
+}
+.telon .barra-sup .etiqueta{color:rgba(255,255,255,.7)}
+.telon .barra-sup button{
+  background:transparent;color:var(--blanco);border:1px solid rgba(255,255,255,.5);
+  border-radius:2px;padding:6px 13px;font-family:inherit;font-size:13px;cursor:pointer;
+}
+.telon .barra-sup button:hover{background:rgba(255,255,255,.14)}
+.lamina{flex:1;overflow-y:auto;padding:44px 30px}
+.lamina .interior{max-width:880px;margin:0 auto}
+.lamina .kicker{font-family:var(--mono);font-size:10.5px;letter-spacing:.19em;text-transform:uppercase;color:rgba(255,255,255,.66);margin-bottom:14px}
+.lamina h2{font-family:var(--serif);font-size:38px;font-weight:400;line-height:1.15;margin:0 0 22px;letter-spacing:-.015em}
+.lamina p{font-size:17px;line-height:1.62;color:rgba(255,255,255,.93);margin:0 0 16px;max-width:70ch}
+.lamina ul{font-size:16.5px;line-height:1.62;color:rgba(255,255,255,.93);padding-left:20px;margin:0 0 16px;max-width:70ch}
+.lamina li{margin-bottom:9px}
+.lamina .destacado{
+  border-left:3px solid rgba(255,255,255,.55);padding:4px 0 4px 18px;
+  font-family:var(--serif);font-size:20px;line-height:1.5;margin:22px 0;
+  color:var(--blanco);max-width:64ch;
+}
+.lamina .formula-l{
+  font-family:var(--mono);font-size:15px;background:rgba(255,255,255,.11);
+  border:1px solid rgba(255,255,255,.22);padding:16px 18px;margin:18px 0;
+  overflow-x:auto;line-height:1.9;
+}
+.lamina table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px}
+.lamina th,.lamina td{text-align:left;padding:9px 12px 9px 0;border-bottom:1px solid rgba(255,255,255,.2);vertical-align:top}
+.lamina th{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:rgba(255,255,255,.66);font-weight:600}
+.lamina td.anio{font-family:var(--mono);white-space:nowrap;width:82px}
+.telon .barra-inf{
+  display:flex;justify-content:space-between;align-items:center;gap:16px;
+  padding:14px 30px;border-top:1px solid rgba(255,255,255,.2);flex-shrink:0;
+}
+.telon .barra-inf button{
+  background:var(--blanco);color:var(--tec);border:none;border-radius:2px;
+  padding:9px 20px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;
+}
+.telon .barra-inf button:disabled{opacity:.35;cursor:default}
+.progreso{display:flex;gap:5px;flex-wrap:wrap;justify-content:center;flex:1}
+.punto{width:22px;height:3px;background:rgba(255,255,255,.3);border-radius:2px;cursor:pointer}
+.punto.activo{background:var(--blanco)}
+.contador{font-family:var(--mono);font-size:12px;color:rgba(255,255,255,.7);white-space:nowrap}
+
+@media (max-width:960px){
   .lienzo{grid-template-columns:1fr}
-  .captura{border-right:none;border-bottom:1px solid var(--regla);padding-bottom:28px}
+  .captura{border-right:none;border-bottom:1px solid var(--g150)}
+  .lamina h2{font-size:29px}
+  .lamina p,.lamina ul{font-size:15.5px}
 }
-@media (prefers-reduced-motion:reduce){
-  .aguja{transition:none}
+@media print{
+  .acciones,.telon,.barra{display:none}
+  .lienzo{grid-template-columns:1fr}
 }
+@media (prefers-reduced-motion:reduce){.aguja{transition:none}}
 </style>
 </head>
 <body>
 
 <header class="encabezado">
-  <div>
-    <div class="eyebrow">Diplomado · Análisis fundamental</div>
-    <h1>Hoja de diagnóstico financiero</h1>
-    <p>Cuatro modelos clásicos sobre una sola captura. Escribe las cifras de dos ejercicios anuales consecutivos y el diagnóstico se recalcula solo.</p>
-  </div>
-  <div class="controles">
-    <select id="selEmpresa" aria-label="Empresa precargada">
-      <option value="">— Captura manual —</option>
-    </select>
-    <select id="selMoneda" aria-label="Escala de las cifras">
-      <option value="1">Cifras tal cual</option>
-      <option value="1000" selected>Cifras en miles</option>
-      <option value="1000000">Cifras en millones</option>
-    </select>
-    <button id="btnCsv" class="fantasma" type="button">Descargar CSV</button>
-    <button id="btnLimpiar" class="fantasma" type="button">Limpiar</button>
+  <div class="interior">
+    <div>
+      <div class="etiqueta">Diplomado · Análisis Fundamental</div>
+      <h1>Hoja de Diagnóstico Financiero</h1>
+      <p>Cuatro modelos clásicos sobre una sola captura de estados financieros. Seleccione una emisora o capture las cifras manualmente; el diagnóstico se recalcula de forma automática.</p>
+    </div>
+    <div class="acciones">
+      <button type="button" class="primario" id="btnPresentacion">Presentación</button>
+      <button type="button" id="btnCsv">Descargar CSV</button>
+      <button type="button" id="btnLimpiar">Limpiar</button>
+    </div>
   </div>
 </header>
+
+<div class="barra">
+  <div class="interior">
+    <div class="campo">
+      <label for="selEmpresa">Emisora</label>
+      <select id="selEmpresa"><option value="">Captura manual</option></select>
+    </div>
+    <div class="campo">
+      <label for="selAnio">Ejercicio</label>
+      <select id="selAnio" disabled><option value="">—</option></select>
+    </div>
+    <div class="campo">
+      <label for="selEscala">Escala de presentación</label>
+      <select id="selEscala">
+        <option value="1">Cifras completas</option>
+        <option value="1000">Miles</option>
+        <option value="1000000" selected>Millones</option>
+      </select>
+    </div>
+    <div class="sello" id="sello"></div>
+  </div>
+</div>
 
 <main class="lienzo">
 
   <section class="captura" aria-label="Captura de estados financieros">
-    <div class="cabecera-fila">
-      <span>Concepto</span><span>Año t</span><span>Año t−1</span>
-    </div>
+    <div class="rejilla titulos"><span>Concepto</span><span>Ejercicio t</span><span>Ejercicio t−1</span></div>
     <div id="formulario"></div>
-    <p class="nota">La escala no cambia ningún resultado: los cuatro modelos son razones. Sirve solo para que captures como viene el estado financiero.</p>
+    <p class="pie-nota">La escala no altera ningún resultado: los cuatro modelos se construyen sobre razones financieras, que son invariantes a la escala. Su único propósito es facilitar la lectura y permitir capturar las cifras tal como aparecen en el estado financiero.</p>
+    <div class="leyenda">
+      <span><i class="muestra"></i> Reportado a la SEC</span>
+      <span><i class="muestra d"></i> Derivado por identidad contable</span>
+      <span><i class="muestra a"></i> Aproximado</span>
+    </div>
   </section>
 
-  <section class="diagnostico" aria-label="Resultados">
+  <section class="resultados" aria-label="Resultados del diagnóstico">
     <div id="avisos"></div>
 
+    <!-- ALTMAN -->
     <article class="tarjeta" id="tAltman">
       <header>
         <div>
           <h3>Altman Z-Score</h3>
-          <div class="eyebrow">Probabilidad de quiebra · Altman (1968)</div>
+          <div class="etiqueta">Probabilidad de insolvencia · Altman (1968)</div>
         </div>
-        <div style="text-align:right">
+        <div class="marcador">
           <div class="puntaje" id="zValor">—</div>
-          <div class="veredicto" id="zVeredicto">sin datos</div>
+          <div class="dictamen d-medio" id="zDictamen">sin datos</div>
         </div>
       </header>
-      <div style="margin-top:10px">
-        <label class="eyebrow" for="selVariante">Variante</label>
-        <select id="selVariante" style="margin-left:8px">
-          <option value="original">Original — manufactura pública</option>
-          <option value="zdoble">Z″ — servicios y mercados emergentes</option>
+      <div style="margin-top:12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <label class="etiqueta" for="selVariante">Variante del modelo</label>
+        <select id="selVariante">
+          <option value="original">Original (1968) — manufactura que cotiza en bolsa</option>
+          <option value="zdoble">Z″ (1995) — servicios y mercados emergentes</option>
         </select>
       </div>
       <div class="banda">
         <div class="pista">
-          <div class="zona z-mal" style="flex:1.81"><span>Zona de quiebra</span></div>
-          <div class="zona z-gris" style="flex:1.18"><span>Gris</span></div>
-          <div class="zona z-bien" style="flex:3.01"><span>Zona segura</span></div>
+          <div class="zona z-mal"><span>Zona de insolvencia</span></div>
+          <div class="zona z-medio"><span>Zona gris</span></div>
+          <div class="zona z-bien"><span>Zona segura</span></div>
           <div class="aguja" id="zAguja" style="left:0%"></div>
         </div>
-        <div class="escala"><span id="zMin">0</span><span id="zCorte1">1.81</span><span id="zCorte2">2.99</span><span id="zMax">6.00</span></div>
+        <div class="escala"><span id="zMin">0.00</span><span id="zC1">1.81</span><span id="zC2">2.99</span><span id="zMax">6.00</span></div>
       </div>
-      <table class="desglose" id="zTabla"></table>
+      <table class="desglose" id="zTabla"><caption>Componentes y contribución al puntaje</caption></table>
+      <div class="tendencia"><h4>Trayectoria del Z-Score</h4><div id="zSerie"></div></div>
+      <details class="explicacion">
+        <summary>Explicación para clase</summary>
+        <div class="cuerpo">
+          <h4>Qué mide</h4>
+          <p>La probabilidad de que una empresa entre en insolvencia dentro de los dos ejercicios siguientes.</p>
+
+          <h4>Origen</h4>
+          <p>Edward I. Altman, entonces profesor de la Universidad de Nueva York, publicó el modelo en 1968. Lo construyó mediante análisis discriminante múltiple sobre una muestra de 66 empresas manufactureras estadounidenses que cotizaban en bolsa: 33 que se declararon en quiebra entre 1946 y 1965, y 33 que sobrevivieron, emparejadas por sector y por tamaño de activos.</p>
+
+          <h4>Cómo se construyó</h4>
+          <p>El análisis discriminante busca la combinación lineal de variables que mejor separa dos grupos conocidos. Altman partió de veintidós razones financieras candidatas y conservó las cinco que, en conjunto, maximizaban esa separación. Los coeficientes no son juicios del autor: son el resultado del procedimiento estadístico.</p>
+          <div class="formula">Z = 1.20·X₁ + 1.40·X₂ + 3.30·X₃ + 0.60·X₄ + 1.00·X₅</div>
+          <p>Donde X₁ es capital de trabajo sobre activo total, una medida de liquidez; X₂ utilidades retenidas sobre activo total, que aproxima la edad y la autofinanciación acumulada de la empresa; X₃ utilidad de operación sobre activo total, la rentabilidad del activo antes de financiamiento e impuestos; X₄ valor de mercado del capital sobre pasivo total, el colchón que el mercado reconoce antes de que el pasivo exceda al activo; y X₅ ventas sobre activo total, la capacidad de generar ingresos con la base de activos.</p>
+
+          <h4>Lectura de los cortes</h4>
+          <p>Por encima de 2.99 la empresa se ubica en la zona segura; por debajo de 1.81, en la zona de insolvencia. El intervalo intermedio es deliberadamente ambiguo. Altman lo denominó zona gris o zona de ignorancia, y su existencia es una virtud del modelo: reconoce de manera explícita los casos en que la evidencia no basta para clasificar.</p>
+
+          <h4>Precisión reportada</h4>
+          <p>En la muestra original el modelo clasificó correctamente 95% de los casos con un ejercicio de anticipación y 72% con dos ejercicios.</p>
+
+          <h4>Variante Z″ para servicios y mercados emergentes</h4>
+          <p>La versión de 1995 elimina la rotación de activos, que penaliza sistemáticamente a los sectores intensivos en servicios, y sustituye el valor de mercado del capital por el valor en libros, lo que permite aplicarla a empresas que no cotizan en bolsa. Sus cortes son 2.60 y 1.10.</p>
+          <div class="formula">Z″ = 6.56·X₁ + 3.26·X₂ + 6.72·X₃ + 1.05·X₄</div>
+
+          <h4>Cuándo no debe utilizarse</h4>
+          <p>En bancos, aseguradoras y demás entidades financieras, donde el capital de trabajo y el apalancamiento no tienen el mismo significado económico. Tampoco en empresas de reciente creación, cuyas utilidades retenidas acumuladas son estructuralmente bajas o negativas sin que ello implique deterioro.</p>
+
+          <p class="fuente">Altman, E. I. (1968). Financial ratios, discriminant analysis and the prediction of corporate bankruptcy. <em>The Journal of Finance</em>, 23(4), 589–609. <a href="https://doi.org/10.1111/j.1540-6261.1968.tb00843.x" target="_blank" rel="noopener">doi.org/10.1111/j.1540-6261.1968.tb00843.x</a></p>
+        </div>
+      </details>
     </article>
 
+    <!-- PIOTROSKI -->
     <article class="tarjeta" id="tPiotroski">
       <header>
         <div>
           <h3>Piotroski F-Score</h3>
-          <div class="eyebrow">Solidez fundamental · Piotroski (2000)</div>
+          <div class="etiqueta">Solidez fundamental · Piotroski (2000)</div>
         </div>
-        <div style="text-align:right">
+        <div class="marcador">
           <div class="puntaje" id="fValor">—</div>
-          <div class="veredicto" id="fVeredicto">sin datos</div>
+          <div class="dictamen d-medio" id="fDictamen">sin datos</div>
         </div>
       </header>
       <div class="banda">
         <div class="pista">
           <div class="zona z-mal" style="flex:3"><span>Débil</span></div>
-          <div class="zona z-gris" style="flex:4"><span>Intermedia</span></div>
-          <div class="zona z-bien" style="flex:2"><span>Fuerte</span></div>
+          <div class="zona z-medio" style="flex:4"><span>Intermedia</span></div>
+          <div class="zona z-bien" style="flex:2"><span>Sólida</span></div>
           <div class="aguja" id="fAguja" style="left:0%"></div>
         </div>
         <div class="escala"><span>0</span><span>3</span><span>7</span><span>9</span></div>
       </div>
       <div class="senales" id="fSenales"></div>
+      <div class="tendencia"><h4>Trayectoria del F-Score</h4><div id="fSerie"></div></div>
+      <details class="explicacion">
+        <summary>Explicación para clase</summary>
+        <div class="cuerpo">
+          <h4>Qué mide</h4>
+          <p>La solidez fundamental de una empresa mediante nueve pruebas binarias, cada una de las cuales aporta un punto.</p>
+
+          <h4>Origen</h4>
+          <p>Joseph D. Piotroski, entonces en la Universidad de Chicago, publicó el modelo en el año 2000. Su pregunta era acotada: dentro del universo de acciones de valor, es decir, aquellas con alta razón de valor en libros a valor de mercado, ¿es posible separar de antemano a las empresas que se recuperarán de las que continuarán deteriorándose?</p>
+
+          <h4>Estructura</h4>
+          <p>Las nueve señales se agrupan en tres bloques. Cuatro miden rentabilidad: rendimiento sobre activos positivo, flujo de operación positivo, rendimiento sobre activos creciente, y flujo de operación superior a la utilidad neta. Tres miden apalancamiento y liquidez: deuda de largo plazo decreciente, razón circulante creciente, y ausencia de emisión de acciones nuevas. Dos miden eficiencia operativa: margen bruto creciente y rotación de activos creciente.</p>
+
+          <h4>Por qué es tan simple</h4>
+          <p>No hay ponderaciones ni coeficientes estimados: cada señal vale exactamente un punto. Esa simplicidad es deliberada. El modelo se diseñó para ser replicable por cualquier analista con los estados financieros a la mano, sin necesidad de herramientas estadísticas ni de estimar parámetros sobre una muestra.</p>
+
+          <h4>Resultado del estudio</h4>
+          <p>En la muestra de 1976 a 1996, una cartera formada por las empresas de puntaje alto superó a una de puntaje bajo por un margen cercano a 23 puntos porcentuales anuales.</p>
+
+          <h4>Advertencia de interpretación</h4>
+          <p>Seis de las nueve señales miden mejora respecto al ejercicio anterior, no nivel. Una empresa excelente y estable puede obtener un puntaje mediano precisamente porque no tiene margen del cual mejorar. El F-Score no es una calificación de calidad: es una medida de dirección. Conviene demostrarlo en clase con una emisora madura y rentable.</p>
+
+          <h4>Ámbito de aplicación</h4>
+          <p>Piotroski lo diseñó y validó sobre acciones de valor. Aplicado a empresas de crecimiento, un puntaje bajo no admite la misma lectura.</p>
+
+          <p class="fuente">Piotroski, J. D. (2000). Value investing: The use of historical financial statement information to separate winners from losers. <em>Journal of Accounting Research</em>, 38(Suplemento), 1–41. <a href="https://doi.org/10.2307/2672906" target="_blank" rel="noopener">doi.org/10.2307/2672906</a></p>
+        </div>
+      </details>
     </article>
 
+    <!-- BENEISH -->
     <article class="tarjeta" id="tBeneish">
       <header>
         <div>
           <h3>Beneish M-Score</h3>
-          <div class="eyebrow">Banderas rojas contables · Beneish (1999)</div>
+          <div class="etiqueta">Indicios de manipulación contable · Beneish (1999)</div>
         </div>
-        <div style="text-align:right">
+        <div class="marcador">
           <div class="puntaje" id="mValor">—</div>
-          <div class="veredicto" id="mVeredicto">sin datos</div>
+          <div class="dictamen d-medio" id="mDictamen">sin datos</div>
         </div>
       </header>
       <div class="banda">
         <div class="pista">
-          <div class="zona z-bien" style="flex:3.22"><span>Perfil normal</span></div>
-          <div class="zona z-mal" style="flex:2.78"><span>Perfil de manipulador</span></div>
+          <div class="zona z-bien" style="flex:3.22"><span>Perfil ordinario</span></div>
+          <div class="zona z-mal" style="flex:2.78"><span>Perfil que amerita revisión</span></div>
           <div class="aguja" id="mAguja" style="left:0%"></div>
         </div>
         <div class="escala"><span>−5.00</span><span>−1.78</span><span>+1.00</span></div>
       </div>
-      <table class="desglose" id="mTabla"></table>
-      <p class="nota">Un M-Score arriba del corte significa que la empresa comparte rasgos estadísticos con manipuladores conocidos. No es evidencia de fraude: es una instrucción para ir a leer las notas.</p>
+      <table class="desglose" id="mTabla"><caption>Índices y contribución al puntaje</caption></table>
+      <div class="tendencia"><h4>Trayectoria del M-Score</h4><div id="mSerie"></div></div>
+      <details class="explicacion">
+        <summary>Explicación para clase</summary>
+        <div class="cuerpo">
+          <h4>Qué mide</h4>
+          <p>La probabilidad de que los estados financieros hayan sido manipulados.</p>
+
+          <h4>Origen</h4>
+          <p>Messod D. Beneish, de la Universidad de Indiana, publicó el modelo en 1999. Su muestra la integraron 74 empresas identificadas como manipuladoras a partir de las acciones de cumplimiento de la Comisión de Valores estadounidense entre 1982 y 1992, contrastadas con 2,332 empresas del mismo periodo sin señalamiento alguno.</p>
+
+          <h4>La lógica</h4>
+          <p>El modelo no busca el fraude de manera directa, sino sus huellas contables. Ocho índices comparan el ejercicio corriente contra el anterior: cuentas por cobrar que crecen más rápido que las ventas (DSRI), márgenes brutos que se deterioran (GMI), activos cuya calidad se degrada (AQI), crecimiento acelerado que genera presión por sostenerlo (SGI), depreciación que se desacelera (DEPI), gastos de administración que se comportan de forma anómala (SGAI), devengos que se despegan del flujo de efectivo (TATA), y apalancamiento creciente (LVGI).</p>
+          <div class="formula">M = −4.84 + 0.920·DSRI + 0.528·GMI + 0.404·AQI + 0.892·SGI
+    + 0.115·DEPI − 0.172·SGAI + 4.679·TATA − 0.327·LVGI</div>
+          <p>Obsérvese la magnitud del coeficiente de TATA, los devengos totales sobre activo. Es, con diferencia, la variable de mayor peso: la separación entre la utilidad devengada y el efectivo realmente cobrado es la señal más informativa del conjunto.</p>
+
+          <h4>Lectura del corte</h4>
+          <p>Un resultado superior a −1.78 indica que el perfil contable de la empresa se asemeja al de las manipuladoras de la muestra.</p>
+
+          <h4>Qué no significa</h4>
+          <p>El modelo no prueba fraude ni lo detecta. Señala un perfil estadístico que amerita revisión. En la muestra original identificó correctamente cerca de 76% de los manipuladores, a cambio de señalar erróneamente alrededor de 17.5% de las empresas sanas. Esa tasa de falsos positivos es elevada, y es precisamente la razón por la que el resultado debe tratarse como una instrucción para leer las notas a los estados financieros, nunca como una conclusión.</p>
+
+          <h4>Nota histórica</h4>
+          <p>En 1998, un grupo de estudiantes de la Universidad de Cornell aplicó el modelo a Enron y concluyó que la empresa presentaba señales de manipulación. El colapso ocurrió tres años después. El episodio suele citarse como demostración del valor del modelo; conviene presentarlo con cautela, ya que un solo caso acertado no constituye validación estadística.</p>
+
+          <h4>Advertencia sobre el marco contable</h4>
+          <p>El modelo se calibró bajo principios de contabilidad estadounidenses. Bajo Normas Internacionales de Información Financiera, varios índices se comportan de manera distinta, en particular AQI y DEPI, por diferencias en la capitalización de activos intangibles y en los métodos de depreciación.</p>
+
+          <p class="fuente">Beneish, M. D. (1999). The detection of earnings manipulation. <em>Financial Analysts Journal</em>, 55(5), 24–36. <a href="https://scholar.google.com/scholar?q=Beneish+The+Detection+of+Earnings+Manipulation+1999" target="_blank" rel="noopener">Consultar en Google Académico</a></p>
+        </div>
+      </details>
     </article>
 
+    <!-- DUPONT -->
     <article class="tarjeta" id="tDupont">
       <header>
         <div>
-          <h3>DuPont</h3>
-          <div class="eyebrow">De dónde sale el ROE · descomposición de 5 pasos</div>
+          <h3>Descomposición DuPont</h3>
+          <div class="etiqueta">Origen del rendimiento sobre capital · cinco factores</div>
         </div>
-        <div style="text-align:right">
+        <div class="marcador">
           <div class="puntaje" id="roeValor">—</div>
-          <div class="veredicto" id="roeVeredicto">ROE año t</div>
+          <div class="dictamen d-medio">ROE del ejercicio t</div>
         </div>
       </header>
-      <div class="cadena" id="cadenaDupont"></div>
-      <table class="desglose" id="dTabla"></table>
+      <div class="cadena" id="cadena"></div>
+      <table class="desglose" id="dTabla"><caption>Indicadores de referencia</caption></table>
+      <div class="tendencia"><h4>Trayectoria del ROE</h4><div id="rSerie"></div></div>
+      <details class="explicacion">
+        <summary>Explicación para clase</summary>
+        <div class="cuerpo">
+          <h4>Qué hace</h4>
+          <p>No mide: descompone. El método separa el rendimiento sobre el capital contable en los factores que lo producen.</p>
+
+          <h4>Origen</h4>
+          <p>Se atribuye a Donaldson Brown, ingeniero eléctrico contratado por E. I. du Pont de Nemours en 1914. Al analizar la inversión de la empresa en General Motors formuló la descomposición que hoy lleva el nombre de la compañía. El método se convirtió en el estándar de control financiero de las grandes corporaciones estadounidenses durante buena parte del siglo XX, y es el más antiguo de los cuatro modelos de esta herramienta.</p>
+
+          <h4>La lógica</h4>
+          <p>Dos empresas pueden presentar idéntico rendimiento sobre capital con modelos de negocio opuestos. Una joyería obtiene su rendimiento de márgenes elevados con rotación baja; una cadena de autoservicio, de márgenes mínimos con rotación elevada; un banco, fundamentalmente del apalancamiento. El indicador agregado oculta esa diferencia; la descomposición la revela.</p>
+          <div class="formula">ROE = Carga fiscal × Carga financiera × Margen operativo
+      × Rotación de activos × Multiplicador de capital</div>
+          <p>La versión de tres factores se limita a margen neto, rotación y apalancamiento. La de cinco factores, empleada aquí, separa además el efecto de la carga fiscal y del costo de la deuda, lo que permite distinguir el desempeño estrictamente operativo de las decisiones de financiamiento y del régimen impositivo aplicable.</p>
+
+          <h4>Cómo leerla</h4>
+          <p>Un incremento del rendimiento sobre capital que provenga del multiplicador de capital significa que la empresa se apalancó más, no que opere mejor. Es la distinción de mayor utilidad práctica para un consejo de administración, y la razón por la cual esta descomposición sigue vigente un siglo después de haberse formulado.</p>
+
+          <h4>Uso recomendado</h4>
+          <p>Comparar la descomposición de una misma empresa a lo largo del tiempo, o entre competidores del mismo sector. La comparación entre sectores distintos rara vez es informativa.</p>
+
+          <p class="fuente">Sobre el origen del método y su papel en la administración corporativa: Chandler, A. D. (1977). <em>The Visible Hand: The Managerial Revolution in American Business</em>. Harvard University Press. <a href="https://scholar.google.com/scholar?q=Donaldson+Brown+DuPont+return+on+investment+formula" target="_blank" rel="noopener">Consultar en Google Académico</a></p>
+        </div>
+      </details>
     </article>
   </section>
 
   <footer class="pie">
-    <h4>Antes de usar esto en una decisión</h4>
-    <ul>
-      <li>Los cuatro modelos piden <strong>cifras anuales</strong>. Un trimestre suelto da resultados sin sentido en Piotroski y Beneish, que comparan año contra año.</li>
-      <li>Altman calibró el Z original con manufactureras estadounidenses que cotizaban en bolsa, muestra 1946–1965. Para servicios, privadas o mercados emergentes usa la variante Z″ y trata los cortes como indicativos.</li>
-      <li>Beneish calibró el M-Score con empresas sancionadas por la SEC entre 1982 y 1992, bajo US GAAP. Bajo IFRS varios índices se comportan distinto, sobre todo AQI y DEPI.</li>
-      <li>Piotroski diseñó el F-Score para carteras de valor (alto valor en libros sobre precio). Aplicado a una empresa de crecimiento, un puntaje bajo no significa lo mismo.</li>
-      <li>Ninguno funciona en bancos, aseguradoras ni empresas financieras: el capital de trabajo y el apalancamiento no significan lo mismo en su balance.</li>
-    </ul>
+    <div class="interior">
+      <div>
+        <h4>Advertencias metodológicas</h4>
+        <ul>
+          <li>Los cuatro modelos requieren <strong>cifras anuales</strong>. Un trimestre aislado produce resultados carentes de sentido en Piotroski y en Beneish, que comparan ejercicio contra ejercicio.</li>
+          <li>Los cortes de Altman y de Beneish provienen de muestras estadounidenses de los años sesenta a noventa, bajo principios contables locales. Fuera de esas condiciones deben tratarse como indicativos.</li>
+          <li>Ninguno de los cuatro modelos es aplicable a bancos, aseguradoras ni entidades financieras.</li>
+          <li>Los modelos no sustituyen la lectura de las notas a los estados financieros. Señalan dónde mirar.</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Origen de los datos</h4>
+        <ul>
+          <li>Las cifras precargadas provienen de los datos XBRL que las emisoras presentan a la Comisión de Valores estadounidense en sus formas 10-K.</li>
+          <li>Consulta directa: <a href="https://www.sec.gov/search-filings/edgar-application-programming-interfaces" target="_blank" rel="noopener">Interfaces de programación de EDGAR</a> y <a href="https://www.sec.gov/edgar/search/" target="_blank" rel="noopener">búsqueda de texto completo en EDGAR</a>.</li>
+          <li>Las cifras señaladas como derivadas se obtuvieron por identidad contable, no de una etiqueta reportada. Las señaladas como aproximadas emplean un supuesto adicional que se documenta en el repositorio.</li>
+          <li>El precio por acción no se reporta a la SEC y debe capturarse manualmente.</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Bibliografía</h4>
+        <p class="ref"><b>Altman, E. I.</b> (1968). Financial ratios, discriminant analysis and the prediction of corporate bankruptcy. <em>The Journal of Finance</em>, 23(4), 589–609.<br><a href="https://doi.org/10.1111/j.1540-6261.1968.tb00843.x" target="_blank" rel="noopener">doi.org/10.1111/j.1540-6261.1968.tb00843.x</a></p>
+        <p class="ref"><b>Beneish, M. D.</b> (1999). The detection of earnings manipulation. <em>Financial Analysts Journal</em>, 55(5), 24–36.<br><a href="https://scholar.google.com/scholar?q=Beneish+The+Detection+of+Earnings+Manipulation" target="_blank" rel="noopener">Consultar en Google Académico</a></p>
+        <p class="ref"><b>Piotroski, J. D.</b> (2000). Value investing: The use of historical financial statement information to separate winners from losers. <em>Journal of Accounting Research</em>, 38(Sup.), 1–41.<br><a href="https://doi.org/10.2307/2672906" target="_blank" rel="noopener">doi.org/10.2307/2672906</a></p>
+        <p class="ref"><b>Altman, E. I., y Hotchkiss, E.</b> (2006). <em>Corporate Financial Distress and Bankruptcy</em> (3.ª ed.). John Wiley &amp; Sons.<br><a href="https://scholar.google.com/scholar?q=Altman+Hotchkiss+Corporate+Financial+Distress+and+Bankruptcy" target="_blank" rel="noopener">Consultar en Google Académico</a></p>
+        <p class="ref"><b>Penman, S. H.</b> (2013). <em>Financial Statement Analysis and Security Valuation</em> (5.ª ed.). McGraw-Hill. Referencia general sobre descomposición del rendimiento y calidad de la información contable.</p>
+      </div>
+    </div>
   </footer>
 </main>
+
+<!-- ---------- Presentación ---------- -->
+<div class="telon" id="telon" role="dialog" aria-modal="true" aria-label="Presentación">
+  <div class="barra-sup">
+    <div class="etiqueta">Diplomado · Análisis Fundamental</div>
+    <button type="button" id="btnCerrar">Cerrar</button>
+  </div>
+  <div class="lamina" id="lamina"><div class="interior" id="laminaInterior"></div></div>
+  <div class="barra-inf">
+    <button type="button" id="btnAtras">Anterior</button>
+    <div class="progreso" id="progreso"></div>
+    <span class="contador" id="contador"></span>
+    <button type="button" id="btnAdelante">Siguiente</button>
+  </div>
+</div>
 
 <script>
 "use strict";
 
-/* ---------- Definición de la captura ---------- */
-const CAMPOS = [
+/* =========================================================
+   Definición de la captura
+   ========================================================= */
+const BLOQUES = [
   {g:"Estado de resultados", campos:[
     {k:"ventas",   n:"Ventas netas"},
     {k:"costo",    n:"Costo de ventas"},
     {k:"gav",      n:"Gastos de venta y administración"},
     {k:"depr",     n:"Depreciación y amortización"},
-    {k:"ebit",     n:"Utilidad de operación (EBIT)"},
+    {k:"ebit",     n:"Utilidad de operación"},
     {k:"ebt",      n:"Utilidad antes de impuestos"},
     {k:"neta",     n:"Utilidad neta"}
   ]},
-  {g:"Balance — activo", campos:[
+  {g:"Balance general · activo", campos:[
     {k:"circulante", n:"Activo circulante"},
     {k:"cxc",        n:"Clientes y cuentas por cobrar"},
-    {k:"ppe",        n:"Propiedad, planta y equipo neto"},
+    {k:"ppe",        n:"Inmuebles, planta y equipo, neto"},
     {k:"valores",    n:"Inversiones y valores negociables"},
     {k:"activo",     n:"Activo total"}
   ]},
-  {g:"Balance — pasivo y capital", campos:[
+  {g:"Balance general · pasivo y capital", campos:[
     {k:"pasCirc",  n:"Pasivo circulante"},
     {k:"deudaLp",  n:"Deuda de largo plazo"},
     {k:"pasivo",   n:"Pasivo total"},
     {k:"retenidas",n:"Utilidades retenidas acumuladas"},
     {k:"capital",  n:"Capital contable"}
   ]},
-  {g:"Flujo y mercado", campos:[
+  {g:"Flujo de efectivo y mercado", campos:[
     {k:"cfo",     n:"Flujo de efectivo de operación"},
     {k:"acciones",n:"Acciones en circulación"},
-    {k:"precio",  n:"Precio por acción (solo año t)", soloT:true}
+    {k:"precio",  n:"Precio por acción (solo ejercicio t)", soloT:true}
   ]}
 ];
+const CLAVES = BLOQUES.flatMap(b => b.campos.map(c => c.k));
 
-const form = document.getElementById("formulario");
-CAMPOS.forEach(function(bloque){
+/* =========================================================
+   Formato numérico
+   ========================================================= */
+function coma(x, dec){
+  if (x === null || x === undefined || !isFinite(x)) return "—";
+  return x.toLocaleString("es-MX", {
+    minimumFractionDigits: dec === undefined ? 0 : dec,
+    maximumFractionDigits: dec === undefined ? 0 : dec
+  });
+}
+function dec(x, d){
+  if (x === null || x === undefined || !isFinite(x)) return "—";
+  return x.toLocaleString("es-MX", {minimumFractionDigits:d, maximumFractionDigits:d});
+}
+function pct(x, d){
+  if (x === null || x === undefined || !isFinite(x)) return "—";
+  return (x*100).toLocaleString("es-MX", {
+    minimumFractionDigits: d === undefined ? 1 : d,
+    maximumFractionDigits: d === undefined ? 1 : d
+  }) + "%";
+}
+function limpiar(txt){
+  if (typeof txt !== "string") return txt;
+  return txt.replace(/[^0-9.\-]/g, "");
+}
+
+/* =========================================================
+   Construcción del formulario
+   ========================================================= */
+const contForm = document.getElementById("formulario");
+BLOQUES.forEach(function(bloque){
   const sec = document.createElement("div");
   sec.className = "grupo";
   const h = document.createElement("h2");
   h.textContent = bloque.g;
   sec.appendChild(h);
+
   bloque.campos.forEach(function(c){
     const fila = document.createElement("div");
-    fila.className = "fila" + (c.soloT ? " solo-t" : "");
+    fila.className = "rejilla" + (c.soloT ? " solo-t" : "");
     const lab = document.createElement("label");
     lab.textContent = c.n;
     lab.setAttribute("for", c.k + "_t");
     fila.appendChild(lab);
-    ["t","p"].forEach(function(anio){
-      if (c.soloT && anio === "p") return;
+
+    ["t","p"].forEach(function(periodo){
+      if (c.soloT && periodo === "p") return;
       const inp = document.createElement("input");
-      inp.type = "number";
-      inp.step = "any";
-      inp.id = c.k + "_" + anio;
-      inp.setAttribute("aria-label", c.n + (anio === "t" ? " año t" : " año t menos 1"));
-      inp.addEventListener("input", calcular);
+      inp.type = "text";
+      inp.inputMode = "decimal";
+      inp.autocomplete = "off";
+      inp.id = c.k + "_" + periodo;
+      inp.dataset.crudo = "";
+      inp.setAttribute("aria-label", c.n + (periodo === "t" ? ", ejercicio t" : ", ejercicio t menos 1"));
+
+      inp.addEventListener("input", function(){
+        inp.dataset.crudo = limpiar(inp.value);
+        inp.dataset.origen = "manual";
+        inp.className = "";
+        calcular();
+      });
+      inp.addEventListener("focus", function(){
+        inp.value = inp.dataset.crudo || "";
+      });
+      inp.addEventListener("blur", function(){
+        const v = parseFloat(inp.dataset.crudo);
+        inp.value = isFinite(v) ? coma(v, contarDecimales(inp.dataset.crudo)) : "";
+      });
       fila.appendChild(inp);
     });
     sec.appendChild(fila);
   });
-  form.appendChild(sec);
+  contForm.appendChild(sec);
 });
 
-/* ---------- Utilidades ---------- */
-function v(k, anio){
-  const el = document.getElementById(k + "_" + anio);
-  if (!el || el.value === "") return null;
-  const x = parseFloat(el.value);
+function contarDecimales(txt){
+  if (!txt) return 0;
+  const p = String(txt).split(".");
+  return p.length > 1 ? Math.min(p[1].length, 2) : 0;
+}
+
+/* =========================================================
+   Lectura de valores
+   ========================================================= */
+function v(clave, periodo){
+  const el = document.getElementById(clave + "_" + periodo);
+  if (!el) return null;
+  const x = parseFloat(el.dataset.crudo);
   return isFinite(x) ? x : null;
 }
-function div(a, b){
-  if (a === null || b === null || b === 0) return null;
-  return a / b;
+function leerPeriodo(periodo){
+  const o = {};
+  CLAVES.forEach(function(k){ o[k] = v(k, periodo); });
+  return o;
 }
-function num(x, d){
-  if (x === null || x === undefined || !isFinite(x)) return "—";
-  return x.toFixed(d === undefined ? 2 : d);
+function razon(a, b){
+  if (a === null || b === null || b === 0 || !isFinite(a) || !isFinite(b)) return null;
+  const r = a / b;
+  return isFinite(r) ? r : null;
 }
-function pct(x){
-  if (x === null || !isFinite(x)) return "—";
-  return (x * 100).toFixed(1) + "%";
+
+/* =========================================================
+   Modelos — funciones puras
+   ========================================================= */
+function calcAltman(t, variante){
+  const ta = t.activo;
+  const ct = (t.circulante !== null && t.pasCirc !== null) ? t.circulante - t.pasCirc : null;
+  const x1 = razon(ct, ta);
+  const x2 = razon(t.retenidas, ta);
+  const x3 = razon(t.ebit, ta);
+  const capMdo = (t.acciones !== null && t.precio !== null) ? t.acciones * t.precio : null;
+  const x4 = (variante === "original") ? razon(capMdo, t.pasivo) : razon(t.capital, t.pasivo);
+  const x5 = razon(t.ventas, ta);
+
+  let coefs, xs, nombres;
+  if (variante === "original"){
+    coefs = [1.20, 1.40, 3.30, 0.60, 1.00];
+    xs = [x1, x2, x3, x4, x5];
+    nombres = [
+      "X₁ · Capital de trabajo ÷ Activo total",
+      "X₂ · Utilidades retenidas ÷ Activo total",
+      "X₃ · Utilidad de operación ÷ Activo total",
+      "X₄ · Valor de mercado del capital ÷ Pasivo total",
+      "X₅ · Ventas ÷ Activo total"
+    ];
+  } else {
+    coefs = [6.56, 3.26, 6.72, 1.05];
+    xs = [x1, x2, x3, x4];
+    nombres = [
+      "X₁ · Capital de trabajo ÷ Activo total",
+      "X₂ · Utilidades retenidas ÷ Activo total",
+      "X₃ · Utilidad de operación ÷ Activo total",
+      "X₄ · Capital contable ÷ Pasivo total"
+    ];
+  }
+  const completo = xs.every(function(x){ return x !== null; });
+  const z = completo ? xs.reduce(function(s,x,i){ return s + x*coefs[i]; }, 0) : null;
+  const cortes = (variante === "original")
+    ? {c1:1.81, c2:2.99, min:0, max:6}
+    : {c1:1.10, c2:2.60, min:-2, max:8};
+  return {z:z, xs:xs, coefs:coefs, nombres:nombres, cortes:cortes};
 }
-function marca(ok){
-  if (ok === null) return "";
-  return ok ? "✓" : "·";
+
+function calcPiotroski(t, p){
+  const roaT = razon(t.neta, t.activo);
+  const roaP = razon(p.neta, p.activo);
+  const circT = razon(t.circulante, t.pasCirc);
+  const circP = razon(p.circulante, p.pasCirc);
+  const apalT = razon(t.deudaLp, t.activo);
+  const apalP = razon(p.deudaLp, p.activo);
+  const brutoT = razon((t.ventas !== null && t.costo !== null) ? t.ventas - t.costo : null, t.ventas);
+  const brutoP = razon((p.ventas !== null && p.costo !== null) ? p.ventas - p.costo : null, p.ventas);
+  const rotT = razon(t.ventas, t.activo);
+  const rotP = razon(p.ventas, p.activo);
+
+  function mayor(a, b){ return (a === null || b === null) ? null : (a > b); }
+
+  const senales = [
+    ["Rendimiento sobre activos positivo",            t.activo === null || roaT === null ? null : roaT > 0],
+    ["Flujo de operación positivo",                   t.cfo === null ? null : t.cfo > 0],
+    ["Rendimiento sobre activos creciente",           mayor(roaT, roaP)],
+    ["Flujo de operación superior a la utilidad neta",mayor(t.cfo, t.neta)],
+    ["Deuda de largo plazo decreciente",              (apalT === null || apalP === null) ? null : apalT < apalP],
+    ["Razón circulante creciente",                    mayor(circT, circP)],
+    ["Sin emisión de acciones nuevas",                (t.acciones === null || p.acciones === null) ? null : t.acciones <= p.acciones],
+    ["Margen bruto creciente",                        mayor(brutoT, brutoP)],
+    ["Rotación de activos creciente",                 mayor(rotT, rotP)]
+  ];
+  const evaluables = senales.filter(function(s){ return s[1] !== null; }).length;
+  const f = senales.reduce(function(s,x){ return s + (x[1] === true ? 1 : 0); }, 0);
+  return {f:f, evaluables:evaluables, senales:senales};
 }
+
+function calcBeneish(t, p){
+  const dsri = razon(razon(t.cxc, t.ventas), razon(p.cxc, p.ventas));
+
+  const brutoT = razon((t.ventas !== null && t.costo !== null) ? t.ventas - t.costo : null, t.ventas);
+  const brutoP = razon((p.ventas !== null && p.costo !== null) ? p.ventas - p.costo : null, p.ventas);
+  const gmi = razon(brutoP, brutoT);
+
+  function calidad(d){
+    if (d.activo === null || d.circulante === null || d.ppe === null || d.activo === 0) return null;
+    const val = (d.valores === null) ? 0 : d.valores;
+    return 1 - (d.circulante + d.ppe + val) / d.activo;
+  }
+  const aqi = razon(calidad(t), calidad(p));
+  const sgi = razon(t.ventas, p.ventas);
+
+  function tasaDepr(d){
+    if (d.depr === null || d.ppe === null || (d.depr + d.ppe) === 0) return null;
+    return d.depr / (d.depr + d.ppe);
+  }
+  const depi = razon(tasaDepr(p), tasaDepr(t));
+  const sgai = razon(razon(t.gav, t.ventas), razon(p.gav, p.ventas));
+  const tata = razon((t.neta !== null && t.cfo !== null) ? t.neta - t.cfo : null, t.activo);
+
+  function apal(d){
+    if (d.pasCirc === null || d.deudaLp === null || d.activo === null || d.activo === 0) return null;
+    return (d.pasCirc + d.deudaLp) / d.activo;
+  }
+  const lvgi = razon(apal(t), apal(p));
+
+  const indices = [
+    ["DSRI · Días de cuentas por cobrar",          dsri,  0.920],
+    ["GMI · Deterioro del margen bruto",           gmi,   0.528],
+    ["AQI · Calidad del activo",                   aqi,   0.404],
+    ["SGI · Crecimiento de ventas",                sgi,   0.892],
+    ["DEPI · Desaceleración de la depreciación",   depi,  0.115],
+    ["SGAI · Gastos de venta y administración",    sgai, -0.172],
+    ["TATA · Devengos totales sobre activo",       tata,  4.679],
+    ["LVGI · Apalancamiento",                      lvgi, -0.327]
+  ];
+  const completo = indices.every(function(c){ return c[1] !== null && isFinite(c[1]); });
+  const m = completo ? -4.84 + indices.reduce(function(s,c){ return s + c[1]*c[2]; }, 0) : null;
+  return {m:m, indices:indices};
+}
+
+function calcDupont(t){
+  const fiscal    = razon(t.neta, t.ebt);
+  const financiera= razon(t.ebt, t.ebit);
+  const margen    = razon(t.ebit, t.ventas);
+  const rotacion  = razon(t.ventas, t.activo);
+  const multi     = razon(t.activo, t.capital);
+  const partes = [fiscal, financiera, margen, rotacion, multi];
+  const roe = partes.every(function(x){ return x !== null; })
+    ? partes.reduce(function(a,b){ return a*b; }, 1) : null;
+  return {roe:roe, partes:partes};
+}
+
+/* =========================================================
+   Gráficas de tendencia
+   ========================================================= */
+function graficar(destino, serie, opciones){
+  const cont = document.getElementById(destino);
+  const puntos = serie.filter(function(d){ return d.valor !== null && isFinite(d.valor); });
+  if (puntos.length < 2){
+    cont.innerHTML = '<p class="sin-serie">Se requieren al menos dos ejercicios con datos completos para trazar la trayectoria.</p>';
+    return;
+  }
+  const op = opciones || {};
+  const W = 560, H = 150, mI = 46, mD = 14, mS = 16, mB = 26;
+  const ax = W - mI - mD, ay = H - mS - mB;
+
+  let vmin = Math.min.apply(null, puntos.map(function(d){ return d.valor; }));
+  let vmax = Math.max.apply(null, puntos.map(function(d){ return d.valor; }));
+  (op.cortes || []).forEach(function(c){ vmin = Math.min(vmin, c); vmax = Math.max(vmax, c); });
+  if (op.min !== undefined) vmin = Math.min(vmin, op.min);
+  if (op.max !== undefined) vmax = Math.max(vmax, op.max);
+  const holgura = (vmax - vmin) * 0.14 || 1;
+  vmin -= holgura; vmax += holgura;
+
+  const px = function(i){ return mI + (puntos.length === 1 ? ax/2 : (i/(puntos.length-1))*ax); };
+  const py = function(val){ return mS + ay - ((val - vmin)/(vmax - vmin))*ay; };
+
+  let s = '<svg viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Trayectoria histórica">';
+  s += '<line x1="'+mI+'" y1="'+(mS+ay)+'" x2="'+(W-mD)+'" y2="'+(mS+ay)+'" stroke="#d4dae1" stroke-width="1"/>';
+
+  (op.cortes || []).forEach(function(c){
+    const y = py(c);
+    if (y < mS || y > mS+ay) return;
+    s += '<line x1="'+mI+'" y1="'+y.toFixed(1)+'" x2="'+(W-mD)+'" y2="'+y.toFixed(1)+'" stroke="#b9c1cb" stroke-width="1" stroke-dasharray="3 3"/>';
+    s += '<text x="'+(mI-6)+'" y="'+(y+3.5).toFixed(1)+'" text-anchor="end" font-family="ui-monospace,monospace" font-size="9" fill="#8b95a1">'+dec(c, op.decCorte === undefined ? 2 : op.decCorte)+'</text>';
+  });
+
+  let d = "";
+  puntos.forEach(function(pt, i){ d += (i === 0 ? "M" : "L") + px(i).toFixed(1) + " " + py(pt.valor).toFixed(1) + " "; });
+  s += '<path d="'+d+'" fill="none" stroke="#0039a6" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>';
+
+  puntos.forEach(function(pt, i){
+    const x = px(i), y = py(pt.valor);
+    s += '<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="3.6" fill="#ffffff" stroke="#0039a6" stroke-width="2"/>';
+    const arriba = y > mS + 26;
+    s += '<text x="'+x.toFixed(1)+'" y="'+(arriba ? y-11 : y+18).toFixed(1)+'" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10.5" font-weight="600" fill="#00266e">'+(op.formato ? op.formato(pt.valor) : dec(pt.valor,2))+'</text>';
+    s += '<text x="'+x.toFixed(1)+'" y="'+(H-8)+'" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10" fill="#6b7581">'+pt.anio+'</text>';
+  });
+  s += '</svg>';
+  cont.innerHTML = s;
+}
+
+/* =========================================================
+   Render principal
+   ========================================================= */
 function posicion(valor, min, max){
-  if (valor === null || !isFinite(valor)) return null;
-  const p = (valor - min) / (max - min);
-  return Math.max(0, Math.min(1, p)) * 100;
+  if (valor === null || !isFinite(valor)) return 0;
+  return Math.max(0, Math.min(1, (valor - min)/(max - min))) * 100;
 }
-function pintar(elId, clase, texto){
-  const el = document.getElementById(elId);
-  el.className = "veredicto " + clase;
+function dictamen(id, clase, texto){
+  const el = document.getElementById(id);
+  el.className = "dictamen " + clase;
   el.textContent = texto;
 }
 
-/* ---------- Altman ---------- */
-function altman(){
+function pintarAltman(t){
   const variante = document.getElementById("selVariante").value;
-  const ta = v("activo","t");
-  const ct = (v("circulante","t") !== null && v("pasCirc","t") !== null) ? v("circulante","t") - v("pasCirc","t") : null;
-  const x1 = div(ct, ta);
-  const x2 = div(v("retenidas","t"), ta);
-  const x3 = div(v("ebit","t"), ta);
-  const capMercado = (v("acciones","t") !== null && v("precio","t") !== null) ? v("acciones","t") * v("precio","t") : null;
-  const x4 = variante === "original" ? div(capMercado, v("pasivo","t")) : div(v("capital","t"), v("pasivo","t"));
-  const x5 = div(v("ventas","t"), ta);
+  const r = calcAltman(t, variante);
+  const c = r.cortes;
 
-  let z = null, coef, filas, c1, c2, min, max;
-  if (variante === "original"){
-    coef = [1.2, 1.4, 3.3, 0.6, 1.0];
-    const xs = [x1, x2, x3, x4, x5];
-    if (xs.every(function(x){ return x !== null; })){
-      z = xs.reduce(function(s, x, i){ return s + x * coef[i]; }, 0);
-    }
-    filas = [
-      ["X1 · Capital de trabajo / Activo total", x1, coef[0]],
-      ["X2 · Utilidades retenidas / Activo total", x2, coef[1]],
-      ["X3 · EBIT / Activo total", x3, coef[2]],
-      ["X4 · Valor de mercado del capital / Pasivo total", x4, coef[3]],
-      ["X5 · Ventas / Activo total", x5, coef[4]]
-    ];
-    c1 = 1.81; c2 = 2.99; min = 0; max = 6;
-  } else {
-    coef = [6.56, 3.26, 6.72, 1.05];
-    const xs = [x1, x2, x3, x4];
-    if (xs.every(function(x){ return x !== null; })){
-      z = xs.reduce(function(s, x, i){ return s + x * coef[i]; }, 0);
-    }
-    filas = [
-      ["X1 · Capital de trabajo / Activo total", x1, coef[0]],
-      ["X2 · Utilidades retenidas / Activo total", x2, coef[1]],
-      ["X3 · EBIT / Activo total", x3, coef[2]],
-      ["X4 · Capital contable / Pasivo total", x4, coef[3]]
-    ];
-    c1 = 1.1; c2 = 2.6; min = -2; max = 8;
-  }
-
-  document.getElementById("zValor").textContent = num(z);
-  document.getElementById("zMin").textContent = min.toFixed(2);
-  document.getElementById("zCorte1").textContent = c1.toFixed(2);
-  document.getElementById("zCorte2").textContent = c2.toFixed(2);
-  document.getElementById("zMax").textContent = max.toFixed(2);
+  document.getElementById("zValor").textContent = dec(r.z, 2);
+  document.getElementById("zMin").textContent = dec(c.min, 2);
+  document.getElementById("zC1").textContent  = dec(c.c1, 2);
+  document.getElementById("zC2").textContent  = dec(c.c2, 2);
+  document.getElementById("zMax").textContent = dec(c.max, 2);
 
   const pista = document.querySelector("#tAltman .pista");
-  pista.children[0].style.flex = String(c1 - min);
-  pista.children[1].style.flex = String(c2 - c1);
-  pista.children[2].style.flex = String(max - c2);
+  pista.children[0].style.flex = String(c.c1 - c.min);
+  pista.children[1].style.flex = String(c.c2 - c.c1);
+  pista.children[2].style.flex = String(c.max - c.c2);
+  document.getElementById("zAguja").style.left = posicion(r.z, c.min, c.max) + "%";
 
-  const p = posicion(z, min, max);
-  document.getElementById("zAguja").style.left = (p === null ? 0 : p) + "%";
+  if (r.z === null) dictamen("zDictamen","d-medio","datos insuficientes");
+  else if (r.z >= c.c2) dictamen("zDictamen","d-bien","zona segura");
+  else if (r.z >= c.c1) dictamen("zDictamen","d-medio","zona gris");
+  else dictamen("zDictamen","d-mal","zona de insolvencia");
 
-  if (z === null) pintar("zVeredicto","", "faltan datos");
-  else if (z >= c2) pintar("zVeredicto","v-bien","zona segura");
-  else if (z >= c1) pintar("zVeredicto","v-gris","zona gris");
-  else pintar("zVeredicto","v-mal","zona de quiebra");
-
-  let html = "<tr><th>Componente</th><th>Valor</th><th>Peso</th><th>Aporte</th></tr>";
-  filas.forEach(function(f){
-    const aporte = f[1] === null ? null : f[1] * f[2];
-    html += "<tr><th>" + f[0] + "</th><td>" + num(f[1], 3) + "</td><td>" + f[2].toFixed(2) + "</td><td>" + num(aporte) + "</td></tr>";
+  let h = "<caption>Componentes y contribución al puntaje</caption><thead><tr><th>Componente</th><th>Valor</th><th>Coeficiente</th><th>Contribución</th></tr></thead><tbody>";
+  r.nombres.forEach(function(nom, i){
+    const x = r.xs[i], k = r.coefs[i];
+    h += "<tr><th>"+nom+"</th><td>"+dec(x,3)+"</td><td>"+dec(k,2)+"</td><td>"+dec(x === null ? null : x*k, 2)+"</td></tr>";
   });
-  document.getElementById("zTabla").innerHTML = html;
-  return z;
+  h += "</tbody>";
+  document.getElementById("zTabla").innerHTML = h;
+  return variante;
 }
 
-/* ---------- Piotroski ---------- */
-function piotroski(){
-  const roaT = div(v("neta","t"), v("activo","t"));
-  const roaP = div(v("neta","p"), v("activo","p"));
-  const cfoT = v("cfo","t");
-  const razonT = div(v("circulante","t"), v("pasCirc","t"));
-  const razonP = div(v("circulante","p"), v("pasCirc","p"));
-  const apalT = div(v("deudaLp","t"), v("activo","t"));
-  const apalP = div(v("deudaLp","p"), v("activo","p"));
-  const mbT = div(v("ventas","t") !== null && v("costo","t") !== null ? v("ventas","t") - v("costo","t") : null, v("ventas","t"));
-  const mbP = div(v("ventas","p") !== null && v("costo","p") !== null ? v("ventas","p") - v("costo","p") : null, v("ventas","p"));
-  const rotT = div(v("ventas","t"), v("activo","t"));
-  const rotP = div(v("ventas","p"), v("activo","p"));
-  const accT = v("acciones","t"), accP = v("acciones","p");
+function pintarPiotroski(t, p){
+  const r = calcPiotroski(t, p);
+  document.getElementById("fValor").textContent = r.evaluables === 0 ? "—" : r.f + " / 9";
+  document.getElementById("fAguja").style.left = posicion(r.f, 0, 9) + "%";
 
-  function cmp(a, b){ return (a === null || b === null) ? null : (a > b); }
-
-  const senales = [
-    ["ROA positivo", roaT === null ? null : roaT > 0],
-    ["Flujo de operación positivo", cfoT === null ? null : cfoT > 0],
-    ["ROA creciente", cmp(roaT, roaP)],
-    ["Flujo de operación mayor que utilidad neta", cmp(cfoT, v("neta","t"))],
-    ["Deuda de largo plazo a la baja", (apalT === null || apalP === null) ? null : apalT < apalP],
-    ["Razón circulante al alza", cmp(razonT, razonP)],
-    ["Sin emisión de acciones nuevas", (accT === null || accP === null) ? null : accT <= accP],
-    ["Margen bruto al alza", cmp(mbT, mbP)],
-    ["Rotación de activos al alza", cmp(rotT, rotP)]
-  ];
-
-  const respondidas = senales.filter(function(s){ return s[1] !== null; }).length;
-  const f = senales.reduce(function(s, x){ return s + (x[1] === true ? 1 : 0); }, 0);
-
-  document.getElementById("fValor").textContent = respondidas === 0 ? "—" : f + " / 9";
-  const p = posicion(f, 0, 9);
-  document.getElementById("fAguja").style.left = (p === null ? 0 : p) + "%";
-
-  if (respondidas < 9) pintar("fVeredicto","", respondidas + " de 9 evaluables");
-  else if (f >= 8) pintar("fVeredicto","v-bien","fundamentales fuertes");
-  else if (f >= 3) pintar("fVeredicto","v-gris","intermedia");
-  else pintar("fVeredicto","v-mal","fundamentales débiles");
+  if (r.evaluables < 9) dictamen("fDictamen","d-medio", r.evaluables + " de 9 evaluables");
+  else if (r.f >= 8) dictamen("fDictamen","d-bien","fundamentales sólidos");
+  else if (r.f >= 3) dictamen("fDictamen","d-medio","posición intermedia");
+  else dictamen("fDictamen","d-mal","fundamentales débiles");
 
   const cont = document.getElementById("fSenales");
   cont.innerHTML = "";
-  senales.forEach(function(s){
+  r.senales.forEach(function(s){
     const d = document.createElement("div");
     d.className = "senal " + (s[1] === true ? "si" : s[1] === false ? "no" : "");
-    d.innerHTML = '<span class="caja">' + (s[1] === true ? "1" : s[1] === false ? "0" : "?") + '</span><span>' + s[0] + '</span>';
+    d.innerHTML = '<span class="caja">'+(s[1] === true ? "1" : s[1] === false ? "0" : "?")+'</span><span>'+s[0]+'</span>';
     cont.appendChild(d);
   });
-  return f;
 }
 
-/* ---------- Beneish ---------- */
-function beneish(){
-  const dsri = div(div(v("cxc","t"), v("ventas","t")), div(v("cxc","p"), v("ventas","p")));
+function pintarBeneish(t, p){
+  const r = calcBeneish(t, p);
+  document.getElementById("mValor").textContent = dec(r.m, 2);
+  document.getElementById("mAguja").style.left = posicion(r.m, -5, 1) + "%";
 
-  const mbT = div(v("ventas","t") !== null && v("costo","t") !== null ? v("ventas","t") - v("costo","t") : null, v("ventas","t"));
-  const mbP = div(v("ventas","p") !== null && v("costo","p") !== null ? v("ventas","p") - v("costo","p") : null, v("ventas","p"));
-  const gmi = div(mbP, mbT);
+  if (r.m === null) dictamen("mDictamen","d-medio","datos insuficientes");
+  else if (r.m > -1.78) dictamen("mDictamen","d-mal","amerita revisión");
+  else dictamen("mDictamen","d-bien","perfil ordinario");
 
-  function calidad(anio){
-    const ta = v("activo", anio);
-    const ca = v("circulante", anio), ppe = v("ppe", anio);
-    const val = v("valores", anio) === null ? 0 : v("valores", anio);
-    if (ta === null || ca === null || ppe === null) return null;
-    return 1 - (ca + ppe + val) / ta;
-  }
-  const aqi = div(calidad("t"), calidad("p"));
-  const sgi = div(v("ventas","t"), v("ventas","p"));
-
-  function tasaDepr(anio){
-    const d = v("depr", anio), p = v("ppe", anio);
-    if (d === null || p === null || (d + p) === 0) return null;
-    return d / (d + p);
-  }
-  const depi = div(tasaDepr("p"), tasaDepr("t"));
-  const sgai = div(div(v("gav","t"), v("ventas","t")), div(v("gav","p"), v("ventas","p")));
-  const tata = div(v("neta","t") !== null && v("cfo","t") !== null ? v("neta","t") - v("cfo","t") : null, v("activo","t"));
-
-  function apal(anio){
-    const cl = v("pasCirc", anio), ld = v("deudaLp", anio), ta = v("activo", anio);
-    if (cl === null || ld === null || ta === null || ta === 0) return null;
-    return (cl + ld) / ta;
-  }
-  const lvgi = div(apal("t"), apal("p"));
-
-  const comps = [
-    ["DSRI · Días de cuentas por cobrar", dsri, 0.920],
-    ["GMI · Deterioro del margen bruto", gmi, 0.528],
-    ["AQI · Calidad del activo", aqi, 0.404],
-    ["SGI · Crecimiento de ventas", sgi, 0.892],
-    ["DEPI · Desaceleración de la depreciación", depi, 0.115],
-    ["SGAI · Gastos de venta y administración", sgai, -0.172],
-    ["TATA · Devengos totales sobre activo", tata, 4.679],
-    ["LVGI · Apalancamiento", lvgi, -0.327]
-  ];
-
-  let m = null;
-  if (comps.every(function(c){ return c[1] !== null && isFinite(c[1]); })){
-    m = -4.84 + comps.reduce(function(s, c){ return s + c[1] * c[2]; }, 0);
-  }
-
-  document.getElementById("mValor").textContent = num(m);
-  const p = posicion(m, -5, 1);
-  document.getElementById("mAguja").style.left = (p === null ? 0 : p) + "%";
-
-  if (m === null) pintar("mVeredicto","", "faltan datos");
-  else if (m > -1.78) pintar("mVeredicto","v-mal","revisar a fondo");
-  else pintar("mVeredicto","v-bien","perfil normal");
-
-  let html = "<tr><th>Índice</th><th>Valor</th><th>Peso</th><th>Aporte</th></tr>";
-  html += "<tr><th>Constante</th><td>—</td><td>—</td><td>-4.840</td></tr>";
-  comps.forEach(function(c){
-    const aporte = c[1] === null ? null : c[1] * c[2];
-    html += "<tr><th>" + c[0] + "</th><td>" + num(c[1], 3) + "</td><td>" + c[2].toFixed(3) + "</td><td>" + num(aporte, 3) + "</td></tr>";
+  let h = "<caption>Índices y contribución al puntaje</caption><thead><tr><th>Índice</th><th>Valor</th><th>Coeficiente</th><th>Contribución</th></tr></thead><tbody>";
+  h += "<tr><th>Constante del modelo</th><td>—</td><td>—</td><td>"+dec(-4.84,3)+"</td></tr>";
+  r.indices.forEach(function(c){
+    h += "<tr><th>"+c[0]+"</th><td>"+dec(c[1],3)+"</td><td>"+dec(c[2],3)+"</td><td>"+dec(c[1] === null ? null : c[1]*c[2], 3)+"</td></tr>";
   });
-  document.getElementById("mTabla").innerHTML = html;
-  return m;
+  h += "</tbody>";
+  document.getElementById("mTabla").innerHTML = h;
 }
 
-/* ---------- DuPont ---------- */
-function dupont(){
-  const cargaFiscal = div(v("neta","t"), v("ebt","t"));
-  const cargaInteres = div(v("ebt","t"), v("ebit","t"));
-  const margenOp = div(v("ebit","t"), v("ventas","t"));
-  const rotacion = div(v("ventas","t"), v("activo","t"));
-  const multiplicador = div(v("activo","t"), v("capital","t"));
-
-  const partes = [cargaFiscal, cargaInteres, margenOp, rotacion, multiplicador];
-  let roe = null;
-  if (partes.every(function(x){ return x !== null; })){
-    roe = partes.reduce(function(a, b){ return a * b; }, 1);
-  }
-
-  document.getElementById("roeValor").textContent = pct(roe);
+function pintarDupont(t, p){
+  const r = calcDupont(t);
+  document.getElementById("roeValor").textContent = pct(r.roe, 1);
 
   const etiquetas = [
-    ["Carga fiscal", cargaFiscal, "Neta ÷ UAI"],
-    ["Carga financiera", cargaInteres, "UAI ÷ EBIT"],
-    ["Margen operativo", margenOp, "EBIT ÷ Ventas"],
-    ["Rotación de activos", rotacion, "Ventas ÷ Activo"],
-    ["Apalancamiento", multiplicador, "Activo ÷ Capital"]
+    ["Carga fiscal",           "Neta ÷ UAI"],
+    ["Carga financiera",       "UAI ÷ Operación"],
+    ["Margen operativo",       "Operación ÷ Ventas"],
+    ["Rotación de activos",    "Ventas ÷ Activo"],
+    ["Multiplicador de capital","Activo ÷ Capital"]
   ];
-
-  const cont = document.getElementById("cadenaDupont");
+  const cont = document.getElementById("cadena");
   cont.innerHTML = "";
   etiquetas.forEach(function(e, i){
     if (i > 0){
       const op = document.createElement("div");
-      op.className = "operador";
-      op.textContent = "×";
+      op.className = "operador"; op.textContent = "×";
       cont.appendChild(op);
     }
     const d = document.createElement("div");
     d.className = "eslabon";
-    d.innerHTML = "<b>" + num(e[1], 3) + "</b><small>" + e[0] + "<br>" + e[2] + "</small>";
+    d.innerHTML = "<b>"+dec(r.partes[i],3)+"</b><small>"+e[0]+"<br>"+e[1]+"</small>";
     cont.appendChild(d);
   });
   const ig = document.createElement("div");
-  ig.className = "operador";
-  ig.textContent = "=";
+  ig.className = "operador"; ig.textContent = "=";
   cont.appendChild(ig);
-  const res = document.createElement("div");
-  res.className = "eslabon resultado";
-  res.innerHTML = "<b>" + pct(roe) + "</b><small>ROE</small>";
-  cont.appendChild(res);
+  const fin = document.createElement("div");
+  fin.className = "eslabon total";
+  fin.innerHTML = "<b>"+pct(r.roe,1)+"</b><small>Rendimiento sobre capital</small>";
+  cont.appendChild(fin);
 
-  const roa = div(v("neta","t"), v("activo","t"));
-  const roeAnt = (function(){
-    const a = div(v("neta","p"), v("capital","p"));
-    return a;
-  })();
-  let html = "<tr><th>Referencia</th><th>Año t</th><th>Año t−1</th></tr>";
-  html += "<tr><th>ROE</th><td>" + pct(roe) + "</td><td>" + pct(roeAnt) + "</td></tr>";
-  html += "<tr><th>ROA</th><td>" + pct(roa) + "</td><td>" + pct(div(v("neta","p"), v("activo","p"))) + "</td></tr>";
-  html += "<tr><th>Margen neto</th><td>" + pct(div(v("neta","t"), v("ventas","t"))) + "</td><td>" + pct(div(v("neta","p"), v("ventas","p"))) + "</td></tr>";
-  document.getElementById("dTabla").innerHTML = html;
-  return roe;
+  let h = "<caption>Indicadores de referencia</caption><thead><tr><th>Indicador</th><th>Ejercicio t</th><th>Ejercicio t−1</th></tr></thead><tbody>";
+  h += "<tr><th>Rendimiento sobre capital</th><td>"+pct(r.roe,1)+"</td><td>"+pct(razon(p.neta,p.capital),1)+"</td></tr>";
+  h += "<tr><th>Rendimiento sobre activos</th><td>"+pct(razon(t.neta,t.activo),1)+"</td><td>"+pct(razon(p.neta,p.activo),1)+"</td></tr>";
+  h += "<tr><th>Margen neto</th><td>"+pct(razon(t.neta,t.ventas),1)+"</td><td>"+pct(razon(p.neta,p.ventas),1)+"</td></tr>";
+  h += "<tr><th>Margen bruto</th><td>"+pct(razon(t.ventas!==null&&t.costo!==null?t.ventas-t.costo:null,t.ventas),1)+"</td><td>"+pct(razon(p.ventas!==null&&p.costo!==null?p.ventas-p.costo:null,p.ventas),1)+"</td></tr>";
+  h += "</tbody>";
+  document.getElementById("dTabla").innerHTML = h;
 }
 
-/* ---------- Avisos de captura ---------- */
-function avisos(){
+function pintarAvisos(t, p){
   const cont = document.getElementById("avisos");
   cont.innerHTML = "";
+
   const faltan = [];
-  CAMPOS.forEach(function(b){
+  BLOQUES.forEach(function(b){
     b.campos.forEach(function(c){
-      if (v(c.k, "t") === null) faltan.push(c.n + " (t)");
-      if (!c.soloT && v(c.k, "p") === null) faltan.push(c.n + " (t−1)");
+      if (v(c.k,"t") === null) faltan.push(c.n + " (t)");
+      if (!c.soloT && v(c.k,"p") === null) faltan.push(c.n + " (t−1)");
     });
   });
-  if (faltan.length > 0){
+  if (faltan.length){
     const d = document.createElement("div");
-    d.className = "aviso faltante";
-    d.innerHTML = "<strong>Faltan " + faltan.length + " cifras.</strong> Cada modelo se calcula solo cuando tiene todos sus insumos. Pendientes: " + faltan.slice(0, 6).join(", ") + (faltan.length > 6 ? " y " + (faltan.length - 6) + " más." : ".");
+    d.className = "aviso";
+    d.innerHTML = "<strong>Faltan "+coma(faltan.length)+" cifras.</strong> Cada modelo se calcula únicamente cuando dispone de todos sus insumos. Pendientes: " +
+      faltan.slice(0,5).join("; ") + (faltan.length > 5 ? "; y "+coma(faltan.length-5)+" más." : ".");
     cont.appendChild(d);
   }
-  const ta = v("activo","t"), pt = v("pasivo","t"), ct = v("capital","t");
-  if (ta !== null && pt !== null && ct !== null){
-    const desc = Math.abs(ta - (pt + ct)) / Math.abs(ta);
-    if (desc > 0.01){
+
+  if (t.activo !== null && t.pasivo !== null && t.capital !== null && t.activo !== 0){
+    const desv = Math.abs(t.activo - (t.pasivo + t.capital)) / Math.abs(t.activo);
+    if (desv > 0.01){
       const d = document.createElement("div");
-      d.className = "aviso";
-      d.textContent = "El balance no cuadra: activo total difiere de pasivo más capital en " + (desc * 100).toFixed(1) + "%. Revisa la captura antes de leer los resultados.";
+      d.className = "aviso rojo";
+      d.innerHTML = "<strong>El balance no cuadra.</strong> El activo total difiere de la suma de pasivo y capital en " +
+        pct(desv,1) + ". Verifique la captura antes de interpretar los resultados.";
       cont.appendChild(d);
     }
   }
 }
 
-/* ---------- Orquestador ---------- */
 function calcular(){
-  avisos();
-  altman();
-  piotroski();
-  beneish();
-  dupont();
+  const t = leerPeriodo("t"), p = leerPeriodo("p");
+  pintarAvisos(t, p);
+  const variante = pintarAltman(t);
+  pintarPiotroski(t, p);
+  pintarBeneish(t, p);
+  pintarDupont(t, p);
+  pintarSeries(variante);
 }
-document.getElementById("selVariante").addEventListener("change", calcular);
-document.getElementById("selMoneda").addEventListener("change", calcular);
 
-/* ---------- Empresas precargadas ---------- */
-function llenarSelect(datos){
-  const sel = document.getElementById("selEmpresa");
-  Object.keys(datos).sort().forEach(function(clave){
-    const o = document.createElement("option");
-    o.value = clave;
-    o.textContent = datos[clave].nombre || clave;
-    sel.appendChild(o);
-  });
-  sel.addEventListener("change", function(){
-    const d = datos[sel.value];
-    if (!d) return;
-    ["t","p"].forEach(function(anio){
-      CAMPOS.forEach(function(b){
-        b.campos.forEach(function(c){
-          const el = document.getElementById(c.k + "_" + anio);
-          if (!el) return;
-          const val = d[anio] ? d[anio][c.k] : undefined;
-          el.value = (val === undefined || val === null) ? "" : val;
-        });
+/* =========================================================
+   Datos precargados y series históricas
+   ========================================================= */
+let EMPRESAS = {};
+let actual = null;
+
+function pintarSeries(variante){
+  if (!actual || !actual.anios || actual.anios.length < 2){
+    ["zSerie","fSerie","mSerie","rSerie"].forEach(function(id){
+      document.getElementById(id).innerHTML =
+        '<p class="sin-serie">Seleccione una emisora para ver la trayectoria de los últimos ejercicios.</p>';
+    });
+    return;
+  }
+  const sZ = [], sF = [], sM = [], sR = [];
+  for (let i = actual.anios.length - 2; i >= 0; i--){
+    const a = actual.anios[i], b = actual.anios[i+1];
+    const dt = Object.assign({}, a.datos), dp = Object.assign({}, b.datos);
+    dt.precio = v("precio","t");   // el precio capturado se aplica solo al ejercicio corriente
+    dp.precio = null;
+    sZ.push({anio:a.fiscal, valor:calcAltman(dt, variante).z});
+    const f = calcPiotroski(dt, dp);
+    sF.push({anio:a.fiscal, valor:f.evaluables === 9 ? f.f : null});
+    sM.push({anio:a.fiscal, valor:calcBeneish(dt, dp).m});
+    sR.push({anio:a.fiscal, valor:calcDupont(dt).roe});
+  }
+  const cortesZ = (variante === "original") ? [1.81, 2.99] : [1.10, 2.60];
+  graficar("zSerie", sZ, {cortes:cortesZ, formato:function(x){ return dec(x,2); }});
+  graficar("fSerie", sF, {cortes:[3,7], min:0, max:9, decCorte:0, formato:function(x){ return dec(x,0); }});
+  graficar("mSerie", sM, {cortes:[-1.78], formato:function(x){ return dec(x,2); }});
+  graficar("rSerie", sR, {formato:function(x){ return pct(x,1); }});
+}
+
+function escala(){
+  return parseFloat(document.getElementById("selEscala").value) || 1;
+}
+
+function cargarEjercicio(){
+  if (!actual) return;
+  const idx = parseInt(document.getElementById("selAnio").value, 10);
+  if (!isFinite(idx)) return;
+  const t = actual.anios[idx];
+  const p = actual.anios[idx+1];
+  const e = escala();
+
+  BLOQUES.forEach(function(b){
+    b.campos.forEach(function(c){
+      [["t", t], ["p", p]].forEach(function(par){
+        if (c.soloT && par[0] === "p") return;
+        const inp = document.getElementById(c.k + "_" + par[0]);
+        if (!inp) return;
+        const reg = par[1];
+        const val = (reg && reg.datos) ? reg.datos[c.k] : null;
+        const org = (reg && reg.origen) ? reg.origen[c.k] : null;
+
+        if (val === null || val === undefined){
+          inp.dataset.crudo = ""; inp.value = ""; inp.className = "";
+        } else {
+          const esCantidad = (c.k !== "acciones" && c.k !== "precio");
+          const ajustado = esCantidad ? val / e : val;
+          const decimales = (Math.abs(ajustado) < 100 && ajustado % 1 !== 0) ? 2 : 0;
+          inp.dataset.crudo = String(ajustado.toFixed(decimales));
+          inp.value = coma(ajustado, decimales);
+          inp.className = (org === "derivado") ? "derivado" : (org === "aproximado") ? "aproximado" : "";
+        }
       });
     });
-    calcular();
   });
+
+  const sello = document.getElementById("sello");
+  sello.innerHTML = actual.nombre + "<br>Cierre del ejercicio: " + t.cierre +
+    " · CIK " + actual.cik;
+  calcular();
 }
 
+function poblarAnios(){
+  const sel = document.getElementById("selAnio");
+  sel.innerHTML = "";
+  if (!actual){
+    sel.disabled = true;
+    sel.innerHTML = '<option value="">—</option>';
+    document.getElementById("sello").innerHTML = "";
+    return;
+  }
+  // Se requiere un ejercicio comparativo, de modo que el más antiguo no se ofrece.
+  for (let i = 0; i < actual.anios.length - 1; i++){
+    const o = document.createElement("option");
+    o.value = String(i);
+    o.textContent = actual.anios[i].fiscal + " (cierre " + actual.anios[i].cierre + ")";
+    sel.appendChild(o);
+  }
+  sel.disabled = false;
+  sel.value = "0";
+}
+
+document.getElementById("selEmpresa").addEventListener("change", function(e){
+  actual = EMPRESAS[e.target.value] || null;
+  poblarAnios();
+  if (actual) cargarEjercicio(); else calcular();
+});
+document.getElementById("selAnio").addEventListener("change", cargarEjercicio);
+document.getElementById("selEscala").addEventListener("change", function(){
+  if (actual) cargarEjercicio();
+});
+document.getElementById("selVariante").addEventListener("change", calcular);
+
 fetch("empresas.json")
-  .then(function(r){ if (!r.ok) throw new Error("sin archivo"); return r.json(); })
-  .then(llenarSelect)
-  .catch(function(){
+  .then(function(r){ if (!r.ok) throw new Error("no disponible"); return r.json(); })
+  .then(function(datos){
+    EMPRESAS = datos;
     const sel = document.getElementById("selEmpresa");
+    Object.keys(datos).sort().forEach(function(clave){
+      const o = document.createElement("option");
+      o.value = clave;
+      o.textContent = clave + " — " + (datos[clave].nombre || clave);
+      sel.appendChild(o);
+    });
+  })
+  .catch(function(){
     const o = document.createElement("option");
     o.disabled = true;
-    o.textContent = "(no se encontró empresas.json)";
-    sel.appendChild(o);
+    o.textContent = "(no se encontró el archivo empresas.json)";
+    document.getElementById("selEmpresa").appendChild(o);
   });
 
-/* ---------- Exportar ---------- */
+/* =========================================================
+   Exportación
+   ========================================================= */
 document.getElementById("btnCsv").addEventListener("click", function(){
-  const lineas = [["Concepto","Año t","Año t-1"]];
-  CAMPOS.forEach(function(b){
+  const filas = [];
+  filas.push(["Hoja de Diagnóstico Financiero"]);
+  filas.push(["Emisora", actual ? actual.nombre : "Captura manual"]);
+  filas.push(["Generado", new Date().toLocaleString("es-MX")]);
+  filas.push([]);
+  filas.push(["Concepto","Ejercicio t","Ejercicio t-1"]);
+  BLOQUES.forEach(function(b){
     b.campos.forEach(function(c){
-      lineas.push([c.n, v(c.k,"t"), c.soloT ? "" : v(c.k,"p")]);
+      filas.push([c.n, v(c.k,"t"), c.soloT ? "" : v(c.k,"p")]);
     });
   });
-  lineas.push([]);
-  lineas.push(["Altman Z-Score", document.getElementById("zValor").textContent, document.getElementById("zVeredicto").textContent]);
-  lineas.push(["Piotroski F-Score", document.getElementById("fValor").textContent, document.getElementById("fVeredicto").textContent]);
-  lineas.push(["Beneish M-Score", document.getElementById("mValor").textContent, document.getElementById("mVeredicto").textContent]);
-  lineas.push(["ROE (DuPont)", document.getElementById("roeValor").textContent, ""]);
+  filas.push([]);
+  filas.push(["Resultado","Valor","Dictamen"]);
+  filas.push(["Altman Z-Score", document.getElementById("zValor").textContent, document.getElementById("zDictamen").textContent]);
+  filas.push(["Piotroski F-Score", document.getElementById("fValor").textContent, document.getElementById("fDictamen").textContent]);
+  filas.push(["Beneish M-Score", document.getElementById("mValor").textContent, document.getElementById("mDictamen").textContent]);
+  filas.push(["ROE (DuPont)", document.getElementById("roeValor").textContent, ""]);
 
-  const csv = lineas.map(function(f){
+  if (actual && actual.anios){
+    filas.push([]);
+    filas.push(["Serie histórica"]);
+    filas.push(["Ejercicio","Cierre"].concat(CLAVES));
+    actual.anios.forEach(function(a){
+      filas.push([a.fiscal, a.cierre].concat(CLAVES.map(function(k){
+        const val = a.datos[k];
+        return (val === null || val === undefined) ? "" : val;
+      })));
+    });
+  }
+
+  const csv = filas.map(function(f){
     return f.map(function(x){
       return '"' + String(x === null || x === undefined ? "" : x).replace(/"/g,'""') + '"';
     }).join(",");
@@ -895,15 +1346,195 @@ document.getElementById("btnCsv").addEventListener("click", function(){
   const blob = new Blob(["\ufeff" + csv], {type:"text/csv;charset=utf-8"});
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
-  a.download = "diagnostico-financiero.csv";
+  a.download = "diagnostico-" + (actual ? actual.ticker : "manual") + ".csv";
   a.click();
   URL.revokeObjectURL(a.href);
 });
 
 document.getElementById("btnLimpiar").addEventListener("click", function(){
-  document.querySelectorAll('#formulario input').forEach(function(i){ i.value = ""; });
+  document.querySelectorAll("#formulario input").forEach(function(i){
+    i.value = ""; i.dataset.crudo = ""; i.className = "";
+  });
   document.getElementById("selEmpresa").value = "";
+  actual = null;
+  poblarAnios();
   calcular();
+});
+
+/* =========================================================
+   Presentación
+   ========================================================= */
+const LAMINAS = [
+{k:"Diplomado · Análisis Fundamental", t:"Cuatro modelos para leer un estado financiero", c:`
+<p>Un estado financiero auditado contiene varios cientos de cifras. Ninguna de ellas, por sí sola, responde las preguntas que un consejo de administración necesita resolver.</p>
+<p>Los cuatro modelos de esta sesión son intentos de reducir esa masa de información a un número interpretable. Cada uno fue formulado para responder una pregunta distinta, y ninguno responde la del otro.</p>
+<div class="destacado">Ninguno de los cuatro sustituye el juicio. Todos indican dónde dirigir la atención.</div>`},
+
+{k:"Panorama", t:"Cuatro preguntas, cuatro modelos", c:`
+<table>
+<tr><th>Modelo</th><th>Pregunta que responde</th></tr>
+<tr><td><b>DuPont</b></td><td>¿De dónde proviene el rendimiento de esta empresa?</td></tr>
+<tr><td><b>Altman</b></td><td>¿Corre riesgo de insolvencia?</td></tr>
+<tr><td><b>Beneish</b></td><td>¿Las cifras son creíbles?</td></tr>
+<tr><td><b>Piotroski</b></td><td>¿Está mejorando o deteriorándose?</td></tr>
+</table>
+<p>El orden en que se aplican importa. Beneish debería ser el primero: si las cifras no son creíbles, los otros tres modelos operan sobre información defectuosa y producirán resultados igualmente defectuosos.</p>`},
+
+{k:"Cronología", t:"Un siglo de análisis financiero", c:`
+<table>
+<tr><th>Año</th><th>Aportación</th></tr>
+<tr><td class="anio">1914</td><td>Donaldson Brown formula la descomposición del rendimiento en DuPont</td></tr>
+<tr><td class="anio">1934</td><td>Graham y Dodd publican <em>Security Analysis</em> y fundan el análisis fundamental moderno</td></tr>
+<tr><td class="anio">1966</td><td>Beaver demuestra que las razones financieras anticipan la quiebra</td></tr>
+<tr><td class="anio">1968</td><td>Altman combina varias razones en un solo puntaje mediante análisis discriminante</td></tr>
+<tr><td class="anio">1980</td><td>Ohlson introduce el enfoque logit, con el modelo O-Score</td></tr>
+<tr><td class="anio">1999</td><td>Beneish traslada el enfoque a la detección de manipulación contable</td></tr>
+<tr><td class="anio">2000</td><td>Piotroski demuestra que nueve pruebas simples separan ganadoras de perdedoras</td></tr>
+</table>
+<p>La trayectoria es reveladora. Se parte de descomponer lo que ya ocurrió, se avanza hacia predecir lo que va a ocurrir, y se termina cuestionando si lo reportado siquiera ocurrió.</p>`},
+
+{k:"DuPont · 1914", t:"El rendimiento agregado oculta el modelo de negocio", c:`
+<p>Donaldson Brown era ingeniero eléctrico. Fue contratado por E. I. du Pont de Nemours y, al analizar la inversión de la empresa en General Motors, formuló la descomposición que hoy lleva el nombre de la compañía.</p>
+<div class="formula-l">ROE = Margen × Rotación × Apalancamiento</div>
+<p>Tres empresas pueden presentar un rendimiento sobre capital de 18% y no parecerse en nada:</p>
+<ul>
+<li>Una joyería: margen elevado, rotación baja.</li>
+<li>Una cadena de autoservicio: margen mínimo, rotación elevada.</li>
+<li>Un banco: márgenes y rotación modestos, apalancamiento considerable.</li>
+</ul>
+<div class="destacado">Cuando el rendimiento sobre capital aumenta porque creció el apalancamiento, la empresa no opera mejor: solamente asumió más riesgo.</div>`},
+
+{k:"Altman · 1968", t:"El problema de las razones aisladas", c:`
+<p>Antes de 1968, un analista que evaluaba solvencia examinaba razones financieras una por una. El procedimiento tenía un defecto conocido: distintas razones apuntaban en direcciones opuestas y no existía regla alguna para resolver el conflicto.</p>
+<p>Altman aplicó análisis discriminante múltiple, una técnica estadística que busca la combinación lineal de variables que mejor separa dos grupos previamente identificados.</p>
+<p>Su muestra: 33 empresas manufactureras estadounidenses que quebraron entre 1946 y 1965, y 33 que sobrevivieron, emparejadas por sector y por tamaño de activos.</p>
+<div class="destacado">De veintidós razones candidatas, cinco resultaron ser las que en conjunto maximizaban la separación entre ambos grupos.</div>`},
+
+{k:"Altman · 1968", t:"La fórmula y sus cortes", c:`
+<div class="formula-l">Z = 1.20·X₁ + 1.40·X₂ + 3.30·X₃ + 0.60·X₄ + 1.00·X₅</div>
+<table>
+<tr><th>Variable</th><th>Contenido económico</th></tr>
+<tr><td><b>X₁</b></td><td>Capital de trabajo ÷ Activo total — liquidez</td></tr>
+<tr><td><b>X₂</b></td><td>Utilidades retenidas ÷ Activo total — edad y autofinanciación</td></tr>
+<tr><td><b>X₃</b></td><td>Utilidad de operación ÷ Activo total — rentabilidad del activo</td></tr>
+<tr><td><b>X₄</b></td><td>Valor de mercado del capital ÷ Pasivo total — colchón de solvencia</td></tr>
+<tr><td><b>X₅</b></td><td>Ventas ÷ Activo total — eficiencia del activo</td></tr>
+</table>
+<p>Por encima de 2.99, zona segura. Por debajo de 1.81, zona de insolvencia. En medio, lo que Altman denominó zona gris o zona de ignorancia.</p>
+<div class="destacado">La zona gris es una virtud del modelo, no una deficiencia: reconoce explícitamente los casos en que la evidencia no basta para clasificar.</div>`},
+
+{k:"Beneish · 1999", t:"¿Y si las cifras no son ciertas?", c:`
+<p>Los tres modelos restantes comparten un supuesto: que los estados financieros reflejan la realidad. Beneish cuestiona precisamente ese supuesto.</p>
+<p>Su muestra la integraron 74 empresas identificadas como manipuladoras a partir de las acciones de cumplimiento de la Comisión de Valores estadounidense entre 1982 y 1992, contrastadas con 2,332 empresas sin señalamiento.</p>
+<div class="formula-l">M = −4.84 + 0.920·DSRI + 0.528·GMI + 0.404·AQI + 0.892·SGI
+    + 0.115·DEPI − 0.172·SGAI + 4.679·TATA − 0.327·LVGI</div>
+<p>Obsérvese la magnitud del coeficiente de TATA, los devengos totales sobre activo. Es, con diferencia, la variable de mayor peso.</p>
+<div class="destacado">La separación entre la utilidad devengada y el efectivo efectivamente cobrado es la señal más informativa del conjunto.</div>`},
+
+{k:"Beneish · 1999", t:"Lo que el modelo no hace", c:`
+<p>En la muestra original, el modelo identificó correctamente cerca de 76% de los manipuladores. A cambio, señaló erróneamente alrededor de 17.5% de las empresas sanas.</p>
+<p>Esa tasa de falsos positivos es elevada y debe declararse siempre que se presente el resultado.</p>
+<div class="destacado">Un M-Score por encima del corte no es evidencia de fraude. Es una instrucción para leer las notas a los estados financieros.</div>
+<p>En 1998, un grupo de estudiantes de la Universidad de Cornell aplicó el modelo a Enron y concluyó que la empresa presentaba señales de manipulación. El colapso ocurrió tres años después.</p>
+<p>El episodio suele citarse como demostración del valor del modelo. Conviene presentarlo con cautela: un solo caso acertado no constituye validación estadística, y el mismo modelo señala erróneamente a una de cada seis empresas sanas.</p>`},
+
+{k:"Piotroski · 2000", t:"Nueve preguntas de sí o no", c:`
+<p>La pregunta de Piotroski era acotada: dentro del universo de acciones de valor, ¿es posible separar de antemano a las empresas que se recuperarán de las que continuarán deteriorándose?</p>
+<table>
+<tr><th>Bloque</th><th>Señales</th></tr>
+<tr><td><b>Rentabilidad</b></td><td>Rendimiento sobre activos positivo; flujo de operación positivo; rendimiento sobre activos creciente; flujo de operación superior a la utilidad neta</td></tr>
+<tr><td><b>Apalancamiento y liquidez</b></td><td>Deuda de largo plazo decreciente; razón circulante creciente; sin emisión de acciones nuevas</td></tr>
+<tr><td><b>Eficiencia</b></td><td>Margen bruto creciente; rotación de activos creciente</td></tr>
+</table>
+<p>Cada señal aporta exactamente un punto. No hay ponderaciones ni coeficientes estimados. La simplicidad es deliberada: el modelo se diseñó para ser replicable sin herramientas estadísticas.</p>
+<p>En la muestra de 1976 a 1996, la cartera de puntaje alto superó a la de puntaje bajo por un margen cercano a 23 puntos porcentuales anuales.</p>`},
+
+{k:"Piotroski · 2000", t:"El error de interpretación más frecuente", c:`
+<p>Seis de las nueve señales miden <em>mejora</em> respecto al ejercicio anterior. Solo tres miden nivel.</p>
+<div class="destacado">Una empresa excelente y estable puede obtener un puntaje mediano precisamente porque no tiene margen del cual mejorar.</div>
+<p>Conviene demostrarlo en clase con una emisora madura y rentable: se observará un puntaje intermedio que, leído como calificación de calidad, resultaría absurdo.</p>
+<p>El F-Score no mide qué tan buena es una empresa. Mide hacia dónde se dirige.</p>`},
+
+{k:"Aplicación", t:"Cómo se emplean en conjunto", c:`
+<p>Un orden defendible para revisar una empresa:</p>
+<ul>
+<li><b>Primero Beneish.</b> Si las cifras no son creíbles, todo lo demás carece de fundamento.</li>
+<li><b>Después Altman.</b> Establece si existe riesgo de insolvencia que domine cualquier otra consideración.</li>
+<li><b>Enseguida DuPont.</b> Explica de dónde proviene el rendimiento y si su origen es sostenible.</li>
+<li><b>Por último Piotroski.</b> Indica la dirección del movimiento en el ejercicio más reciente.</li>
+</ul>
+<p>Los cuatro se calculan con la misma captura de datos. Esa es la razón por la que esta herramienta los reúne en una sola hoja.</p>`},
+
+{k:"Límites", t:"Lo que estos modelos no pueden hacer", c:`
+<ul>
+<li>Requieren <b>cifras anuales</b>. Un trimestre aislado produce resultados carentes de sentido en Piotroski y en Beneish.</li>
+<li>Los cortes provienen de muestras estadounidenses de los años sesenta a noventa. Fuera de esas condiciones son indicativos, no concluyentes.</li>
+<li>No son aplicables a <b>bancos, aseguradoras ni entidades financieras</b>.</li>
+<li>No incorporan información cualitativa: calidad de la administración, posición competitiva, riesgo regulatorio, concentración de clientes.</li>
+<li>Un modelo ampliamente conocido puede ser objeto de manipulación deliberada por quien conoce su fórmula.</li>
+</ul>
+<div class="destacado">Un modelo bien construido no toma la decisión. Reduce el número de preguntas que deben formularse.</div>`},
+
+{k:"Referencias", t:"Bibliografía", c:`
+<p><b>Altman, E. I.</b> (1968). Financial ratios, discriminant analysis and the prediction of corporate bankruptcy. <em>The Journal of Finance</em>, 23(4), 589–609.</p>
+<p><b>Beneish, M. D.</b> (1999). The detection of earnings manipulation. <em>Financial Analysts Journal</em>, 55(5), 24–36.</p>
+<p><b>Piotroski, J. D.</b> (2000). Value investing: The use of historical financial statement information to separate winners from losers. <em>Journal of Accounting Research</em>, 38(Suplemento), 1–41.</p>
+<p><b>Beaver, W. H.</b> (1966). Financial ratios as predictors of failure. <em>Journal of Accounting Research</em>, 4, 71–111.</p>
+<p><b>Ohlson, J. A.</b> (1980). Financial ratios and the probabilistic prediction of bankruptcy. <em>Journal of Accounting Research</em>, 18(1), 109–131.</p>
+<p><b>Altman, E. I., y Hotchkiss, E.</b> (2006). <em>Corporate Financial Distress and Bankruptcy</em> (3.ª ed.). John Wiley &amp; Sons.</p>
+<p><b>Penman, S. H.</b> (2013). <em>Financial Statement Analysis and Security Valuation</em> (5.ª ed.). McGraw-Hill.</p>
+<p style="margin-top:22px;font-size:14px;color:rgba(255,255,255,.72)">Datos financieros: Comisión de Valores de los Estados Unidos, formas 10-K en formato XBRL, obtenidos mediante las interfaces públicas de EDGAR.</p>`}
+];
+
+let lamina = 0;
+const telon = document.getElementById("telon");
+
+function pintarLamina(){
+  const l = LAMINAS[lamina];
+  document.getElementById("laminaInterior").innerHTML =
+    '<div class="kicker">' + l.k + '</div><h2>' + l.t + '</h2>' + l.c;
+  document.getElementById("lamina").scrollTop = 0;
+  document.getElementById("contador").textContent = (lamina+1) + " / " + LAMINAS.length;
+  document.getElementById("btnAtras").disabled = (lamina === 0);
+  document.getElementById("btnAdelante").disabled = (lamina === LAMINAS.length-1);
+
+  const prog = document.getElementById("progreso");
+  prog.innerHTML = "";
+  LAMINAS.forEach(function(_, i){
+    const d = document.createElement("button");
+    d.className = "punto" + (i === lamina ? " activo" : "");
+    d.type = "button";
+    d.setAttribute("aria-label", "Ir a la lámina " + (i+1));
+    d.style.border = "none"; d.style.padding = "0";
+    d.addEventListener("click", function(){ lamina = i; pintarLamina(); });
+    prog.appendChild(d);
+  });
+}
+function abrirPresentacion(){
+  telon.classList.add("visible");
+  lamina = 0;
+  pintarLamina();
+  document.body.style.overflow = "hidden";
+  document.getElementById("btnCerrar").focus();
+}
+function cerrarPresentacion(){
+  telon.classList.remove("visible");
+  document.body.style.overflow = "";
+  document.getElementById("btnPresentacion").focus();
+}
+document.getElementById("btnPresentacion").addEventListener("click", abrirPresentacion);
+document.getElementById("btnCerrar").addEventListener("click", cerrarPresentacion);
+document.getElementById("btnAtras").addEventListener("click", function(){
+  if (lamina > 0){ lamina--; pintarLamina(); }
+});
+document.getElementById("btnAdelante").addEventListener("click", function(){
+  if (lamina < LAMINAS.length-1){ lamina++; pintarLamina(); }
+});
+document.addEventListener("keydown", function(e){
+  if (!telon.classList.contains("visible")) return;
+  if (e.key === "Escape") cerrarPresentacion();
+  if ((e.key === "ArrowRight" || e.key === " ") && lamina < LAMINAS.length-1){ e.preventDefault(); lamina++; pintarLamina(); }
+  if (e.key === "ArrowLeft" && lamina > 0){ lamina--; pintarLamina(); }
 });
 
 calcular();
