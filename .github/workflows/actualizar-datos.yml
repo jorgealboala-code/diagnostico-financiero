@@ -2,18 +2,22 @@ name: Actualizar datos
 
 # Se dispara de dos formas:
 #   1. Con el boton "Run workflow" en la pestaña Actions.
-#   2. Solo, el dia 5 de cada mes a las 9:00 UTC.
+#   2. De forma automatica, el dia 5 de cada mes a las 9:00 UTC.
 on:
   workflow_dispatch:
     inputs:
       tickers:
-        description: "Empresas, separadas por coma. Ejemplo: KO,PEP,WMT,NKE,CAT"
+        description: "Emisoras, separadas por coma"
         required: true
-        default: "KO,PEP,WMT,NKE,CAT,COST,MCD,SBUX,F,GM"
+        default: "KO,PEP,WMT,NKE,CAT,COST,MCD,SBUX,F,PG,JNJ,HD"
       anio:
         description: "Ejercicio mas reciente"
         required: true
         default: "2024"
+      anios:
+        description: "Ejercicios de historia a descargar (6 produce 5 puntos de tendencia)"
+        required: true
+        default: "6"
   schedule:
     - cron: "0 9 5 * *"
 
@@ -33,9 +37,20 @@ jobs:
       - name: Bajar datos de EDGAR
         env:
           SEC_CONTACTO: ${{ secrets.SEC_CONTACTO }}
-          TICKERS: ${{ github.event.inputs.tickers || 'KO,PEP,WMT,NKE,CAT,COST,MCD,SBUX,F,GM' }}
+          TICKERS: ${{ github.event.inputs.tickers || 'KO,PEP,WMT,NKE,CAT,COST,MCD,SBUX,F,PG,JNJ,HD' }}
           ANIO: ${{ github.event.inputs.anio || '2024' }}
+          ANIOS: ${{ github.event.inputs.anios || '6' }}
         run: python3 construir_empresas.py
+
+      - name: Verificar el archivo generado
+        run: |
+          python3 - <<'FIN'
+          import json
+          d = json.load(open("empresas.json"))
+          assert d, "empresas.json quedo vacio"
+          total = sum(len(e["anios"]) for e in d.values())
+          print("Verificado: %d emisoras, %d ejercicios." % (len(d), total))
+          FIN
 
       - name: Guardar el resultado
         run: |
@@ -47,7 +62,5 @@ jobs:
             exit 0
           fi
           git commit -m "Actualiza empresas.json desde EDGAR"
-          # Ponerse al dia con lo que haya cambiado en el repositorio mientras
-          # corria este proceso. Va despues del commit, nunca antes.
           git pull --rebase origin main
           git push origin main
